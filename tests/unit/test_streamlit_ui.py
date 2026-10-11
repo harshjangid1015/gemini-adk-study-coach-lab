@@ -94,6 +94,9 @@ def test_streamlit_ui_day_4_resources(sample_study_plan: StudyPlan) -> None:
     )
     assert has_resources_header
 
+    # Verify Day 4 thumbnail cards rendered
+    assert len(at.image) > 0
+
 
 def test_streamlit_ui_learn_topic_diagram_and_code() -> None:
     """Verify Learn Topic displays architecture diagram, code demo, and resources."""
@@ -128,6 +131,9 @@ def test_streamlit_ui_learn_topic_diagram_and_code() -> None:
 
     # Verify Code blocks are present
     assert len(at.code) >= 2  # tokenization demo and attention demo expected outputs
+
+    # Verify ResourceCard thumbnails rendered
+    assert len(at.image) > 0
 
 
 def test_streamlit_ui_weak_topic_remediation() -> None:
@@ -164,3 +170,6 @@ def test_streamlit_ui_weak_topic_remediation() -> None:
         "Review the visual architecture diagram" in text for text in markdown_texts
     )
     assert has_steps
+
+    # Verify thumbnail cards rendered for weak topic remediation
+    assert len(at.image) > 0

@@ -57,6 +57,10 @@ class LearningResource(BaseModel):
     is_official: bool = Field(
         default=False, description="True if published directly by Google Cloud"
     )
+    thumbnail_url: HttpUrl | None = Field(
+        default=None,
+        description="Optional verified HTTPS preview image or thumbnail URL",
+    )
     tags: list[str] = Field(default_factory=list, description="Categorization keywords")
 
     @field_validator("topic_ids")

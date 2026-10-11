@@ -35,25 +35,34 @@ A versioned, strictly verified catalog of external learning resources is maintai
 - `exam_domain`: Relevant exam domain
 - `requires_login` / `requires_paid_access`: Access prerequisites
 - `is_official`: Boolean indicating whether published directly by Google
+- `thumbnail_url`: Optional verified HTTPS preview or thumbnail URL
 - `verification_status`: `verified` or `unverified`
 
-### Verified Resources Catalog
-| Resource ID | Title | Provider | Type | Duration | Official |
-|---|---|---|---|---|---|
-| `google_genai_leader_exam_guide` | Generative AI Leader Certification Exam Guide | Google Cloud | Official exam guide | 20 min | Yes |
-| `vertex_ai_genai_docs` | Vertex AI Generative AI Documentation & Overview | Google Cloud | Official documentation | 25 min | Yes |
-| `google_ml_crash_course_llm` | Google Machine Learning Crash Course - Large Language Models | Google Developers | Interactive tutorial | 30 min | Yes |
-| `google_responsible_ai_practices` | Google Responsible AI Practices and Principles | Google | Official documentation | 20 min | Yes |
-| `vertex_ai_studio_quickstart` | Vertex AI Studio Prompt Design & Prototyping Quickstart | Google Cloud | Official documentation | 15 min | Yes |
-| `google_cloud_rag_grounding_repo` | Vertex AI Search & Grounding Reference Architecture | Google Cloud Platform | GitHub repository | 30 min | Yes |
-| `huggingface_llm_course_intro` | Hugging Face LLM Course - Chapter 1: Introduction | Hugging Face | Article | 25 min | No |
-| `3b1b_transformer_video` | Visualizing Transformers & Attention Mechanisms | 3Blue1Brown | Video | 27 min | No |
-| `3b1b_attention_video` | Attention in Transformers, Visually Explained | 3Blue1Brown | Video | 26 min | No |
+### Verified Resources Catalog & Thumbnail Sources
+| Resource ID | Title | Provider | Type | Duration | Official | Thumbnail Source |
+|---|---|---|---|---|---|---|
+| `google_genai_leader_exam_guide` | Generative AI Leader Certification Exam Guide | Google Cloud | Official exam guide | 20 min | Yes | Branded 16:9 SVG card |
+| `vertex_ai_genai_docs` | Vertex AI Generative AI Documentation & Overview | Google Cloud | Official documentation | 25 min | Yes | Branded 16:9 SVG card |
+| `google_ml_crash_course_llm` | Google Machine Learning Crash Course - Large Language Models | Google Developers | Interactive tutorial | 30 min | Yes | Branded 16:9 SVG card |
+| `google_responsible_ai_practices` | Google Responsible AI Practices and Principles | Google | Official documentation | 20 min | Yes | Branded 16:9 SVG card |
+| `vertex_ai_studio_quickstart` | Vertex AI Studio Prompt Design & Prototyping Quickstart | Google Cloud | Official documentation | 15 min | Yes | Branded 16:9 SVG card |
+| `google_cloud_rag_grounding_repo` | Vertex AI Search & Grounding Reference Architecture | Google Cloud Platform | GitHub repository | 30 min | Yes | Branded 16:9 SVG card |
+| `huggingface_llm_course_intro` | Hugging Face LLM Course - Chapter 1: Introduction | Hugging Face | Article | 25 min | No | Branded 16:9 SVG card |
+| `3b1b_transformer_video` | Visualizing Transformers & Attention Mechanisms | 3Blue1Brown | Video | 27 min | No | YouTube HQ: `https://i.ytimg.com/vi/wjZofJX0v4M/hqdefault.jpg` |
+| `3b1b_attention_video` | Attention in Transformers, Visually Explained | 3Blue1Brown | Video | 26 min | No | YouTube HQ: `https://i.ytimg.com/vi/eMlx5fFNoYc/hqdefault.jpg` |
+
+### Thumbnail Resolution Pipeline
+1. **YouTube Video Detection:** Parsed via `extract_youtube_video_id` supporting `youtube.com/watch?v=`, `youtu.be/`, `youtube.com/embed/`, and `youtube.com/v/`. Video ID is validated against 11-character alphanumeric regex (`^[a-zA-Z0-9_-]{11}$`).
+2. **Official YouTube HQ Thumbnail:** Returns `https://i.ytimg.com/vi/{video_id}/hqdefault.jpg`.
+3. **Explicit Metadata Preview:** Returns `thumbnail_url` if configured in resource metadata.
+4. **Sleek 16:9 SVG Fallback:** Self-contained high-contrast dark gradient graphic with provider attribution, official badges, and duration estimates.
+5. **Embedded Player:** Non-autoplay Streamlit `st.video` expandable component for seamless in-app viewing without session loss.
 
 ### Licensing & Link Verification Policy
 - All links are tested for public availability and 200 HTTP response.
 - Third-party content (e.g., 3Blue1Brown, Hugging Face) is linked directly to authoritative public endpoints without scraping, mirroring, or violating copyright.
 - Official Google resources are distinguished from third-party community resources with explicit visual badges.
+
 
 ---
 

@@ -8,10 +8,10 @@ from typing import Any, Literal, cast
 import streamlit as st
 from dotenv import load_dotenv
 
-from study_coach.models.learning_resource import LearningResource
 from study_coach.models.quiz import QuizSubmission
 from study_coach.models.student import StudentProfile
 from study_coach.services.workshop_facade import WorkshopFacade
+from ui.components.resource_cards import render_resource_grid
 
 # Load environment configuration
 load_dotenv()
@@ -40,39 +40,8 @@ def run_async(coro: Any) -> Any:
     return loop.run_until_complete(coro)
 
 
-def render_resource_card(res: LearningResource) -> None:
-    """Render a clean, badge-enhanced card for a curated learning resource."""
-    with st.container(border=True):
-        col_main, col_badge = st.columns([4, 1])
-        with col_main:
-            official_badge = (
-                "⭐ **Official Google**" if res.is_official else "🌐 **Community**"
-            )
-            st.markdown(f"#### {res.title}")
-            st.caption(
-                f"{official_badge} | Provider: **{res.provider}** | Type: `{res.resource_type}`"
-            )
-            st.write(res.short_description)
-            if res.estimated_minutes:
-                st.caption(
-                    f"⏱️ Estimated Duration: ~{res.estimated_minutes} min | Level: {res.experience_level.capitalize()}"
-                )
-            st.link_button(
-                f"🔗 Open {res.resource_type.title()}",
-                str(res.url),
-                use_container_width=False,
-            )
-
-        with col_badge:
-            if res.requires_paid_access:
-                st.badge("Paid / Account", icon="💳")
-            elif res.requires_login:
-                st.badge("Free (Login)", icon="🔑")
-            else:
-                st.badge("100% Free Access", icon="🟢")
-
-
 # Initialize persistent Facade in Streamlit session state
+
 if "facade" not in st.session_state:
     st.session_state.facade = WorkshopFacade()
 
@@ -243,8 +212,7 @@ with tab_plan:
                 "💡 **Study Budget Notice:** External resources are optional enrichment with independent "
                 "time estimates and do **not** silently inflate your daily study budget."
             )
-            for res in day_resources:
-                render_resource_card(res)
+            render_resource_grid(day_resources, columns=2)
     else:
         st.info(
             "No active study plan found. Click 'Generate Initial Plan' above to start."
@@ -373,8 +341,7 @@ with tab_learn:
             )
             topic_res = facade.get_topic_resources(chosen_topic_id)
             if topic_res:
-                for res in topic_res:
-                    render_resource_card(res)
+                render_resource_grid(topic_res, columns=2)
             else:
                 st.info("Resources catalog currently being populated for this topic.")
 
@@ -591,8 +558,7 @@ with tab_adaptive:
                         "3. 📖 Review the official documentation and video resources below:"
                     )
                     wt_res = facade.get_topic_resources(wt)
-                    for r in wt_res:
-                        render_resource_card(r)
+                    render_resource_grid(wt_res, columns=2)
         else:
             st.info(
                 "No weak topics identified yet. Complete a practice quiz to generate performance evidence."
