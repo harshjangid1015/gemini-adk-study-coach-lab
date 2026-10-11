@@ -108,11 +108,21 @@ The Grafana dashboard visualizes workflow requests, agent calls, quiz submission
 
 Both the Study Coach application and OpenTelemetry Collector appear as **UP** in the Prometheus targets screen.
 
-### E. Trace Explorer — no trace selected
+### E. Distributed Trace Waterfall in Grafana Tempo
 
-![Grafana Tempo Explore interface before a trace query has been executed](docs/images/grafana-tempo-explore-no-trace-selected.png)
+![Grafana Tempo distributed trace waterfall](docs/images/grafana-tempo-agent-trace-waterfall.png)
 
-This screenshot demonstrates the **Tempo Explore interface only**. It displays **No data** because no trace query or trace ID is selected. It is **not** evidence of a verified trace waterfall. To document a real trace, run a Study Coach workflow, query recent spans in Tempo, open a trace and capture its waterfall as a separate screenshot.
+This screenshot demonstrates actual OpenTelemetry distributed trace spans captured in Grafana Tempo during a live Google ADK Study Coach workflow (`explain_topic`).
+
+The trace (`study-coach: study_coach.explain_topic`) visualizes 24 hierarchical spans and their measured durations across agent and tool lifecycles:
+- **Workflow Root**: `study_coach.explain_topic` (36.11s) orchestrating the end-to-end request.
+- **Agent Lifecycle**: `invocation`, `adk.agent.topic_expert`, and `invoke_agent topic_expert` (36.06s).
+- **Gemini Model Calls**: `call_llm` and underlying `generate_content gemini-3.8-flash` spans measuring LLM inference latency.
+- **Tool Executions**:
+  - `get_topic_by_id` (`execute_tool` and `adk.tool.get_topic_by_id`) retrieving curriculum metadata.
+  - `get_related_topics` (`execute_tool` and `adk.tool.get_related_topics`) discovering connected study topics.
+  - `search_topics` (`execute_tool` and `adk.tool.search_topics`) querying topic definitions.
+  - `set_model_response` (`execute_tool` and `adk.tool.set_model_response`) packaging structured agent outputs.
 
 ## Roadmap
 - Milestone 1: Project Foundation (Done)
