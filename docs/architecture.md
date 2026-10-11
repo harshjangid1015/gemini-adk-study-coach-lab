@@ -5,7 +5,7 @@ graph TD
     User([Student]) --> UI["Web UI / Workshop UI (Planned)"]
     UI --> Coordinator["Study Coach Coordinator Agent"]
     
-    Coordinator --> Planner["Study Planner Agent (Planned)"]
+    Coordinator --> Planner["Study Planner Agent"]
     Coordinator --> Expert["Topic Expert Agent (Planned)"]
     Coordinator --> Quiz["Quiz Generator Agent (Planned)"]
     
@@ -15,4 +15,4 @@ graph TD
 ```
 
 ### Note on Features
-The `Study Coach Coordinator Agent` is currently implemented as a basic ADK agent for Milestone 1. The web UI and all other agents (`Study Planner Agent`, `Topic Expert Agent`, `Quiz Generator Agent`) are planned for future milestones.
+The `Study Coach Coordinator Agent` and `Study Planner Agent` are currently implemented for Milestone 2. The web UI and other agents (`Topic Expert Agent`, `Quiz Generator Agent`) are planned for future milestones.

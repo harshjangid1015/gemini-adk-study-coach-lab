@@ -1,0 +1,40 @@
+{
+    "certification_name": "Google Cloud Generative AI Leader",
+    "days_until_exam": 7,
+    "daily_study_minutes": 45,
+    "total_planned_minutes": 90,
+    "planning_notes": "Illustrative 7-day study plan covering the curriculum topics.",
+    "days": [
+        {
+            "day_number": 1,
+            "title": "Generative AI Basics",
+            "total_minutes": 45,
+            "activities": [
+                {
+                    "topic_id": "genai_concepts",
+                    "activity_type": "learning",
+                    "description": "Understand Generative AI vs Traditional AI",
+                    "duration_minutes": 45
+                }
+            ]
+        },
+        {
+            "day_number": 2,
+            "title": "LLM Fundamentals",
+            "total_minutes": 45,
+            "activities": [
+                {
+                    "topic_id": "llm_architecture",
+                    "activity_type": "learning",
+                    "description": "Learn about LLMs",
+                    "duration_minutes": 45
+                }
+            ]
+        },
+        { "day_number": 3, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 4, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 5, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 6, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 7, "title": "Mock", "total_minutes": 0, "activities": [] }
+    ]
+}

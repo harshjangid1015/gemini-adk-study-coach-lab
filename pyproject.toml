@@ -3,7 +3,7 @@ name = "study-coach"
 version = "0.1.0"
 description = "AI Study Coach helping students prepare for technical certifications"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "google-adk>=0.1.0",
     "pydantic>=2.0.0",
@@ -19,14 +19,19 @@ dev = [
 
 [tool.ruff]
 line-length = 88
-target-version = "py311"
+target-version = "py312"
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 strict = true
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "types-pyyaml>=6.0.12.20260906",
+]
 [tool.pytest.ini_options]
 pythonpath = ["src"]

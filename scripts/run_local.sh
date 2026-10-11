@@ -2,4 +2,4 @@
 set -e
 
 echo "Starting Google ADK Developer UI..."
-uv run adk dev
+uv run adk web

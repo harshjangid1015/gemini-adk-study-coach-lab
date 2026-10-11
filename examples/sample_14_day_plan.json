@@ -1,0 +1,52 @@
+{
+    "certification_name": "Google Cloud Generative AI Leader",
+    "days_until_exam": 14,
+    "daily_study_minutes": 90,
+    "total_planned_minutes": 130,
+    "planning_notes": "Illustrative 14-day study plan covering the curriculum topics.",
+    "days": [
+        {
+            "day_number": 1,
+            "title": "Generative AI Basics",
+            "total_minutes": 90,
+            "activities": [
+                {
+                    "topic_id": "genai_concepts",
+                    "activity_type": "learning",
+                    "description": "Understand Generative AI vs Traditional AI",
+                    "duration_minutes": 90
+                }
+            ]
+        },
+        {
+            "day_number": 2,
+            "title": "LLM Fundamentals",
+            "total_minutes": 40,
+            "activities": [
+                {
+                    "topic_id": "llm_architecture",
+                    "activity_type": "learning",
+                    "description": "Learn about LLMs",
+                    "duration_minutes": 40
+                }
+            ]
+        },
+        {
+            "day_number": 3,
+            "title": "Rest of the plan mocked",
+            "total_minutes": 0,
+            "activities": []
+        },
+        { "day_number": 4, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 5, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 6, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 7, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 8, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 9, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 10, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 11, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 12, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 13, "title": "Mock", "total_minutes": 0, "activities": [] },
+        { "day_number": 14, "title": "Mock", "total_minutes": 0, "activities": [] }
+    ]
+}

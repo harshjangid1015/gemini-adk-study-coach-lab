@@ -1,0 +1,49 @@
+metadata:
+  source_url: "https://cloud.google.com/certification/guides/generative-ai-leader"
+  source_date: "2024-05"
+  description: "Illustrative sample curriculum for Google Cloud Generative AI Leader certification."
+
+topics:
+  - id: "genai_concepts"
+    title: "Generative AI Concepts"
+    description: "Understand the fundamentals of generative AI and how it differs from other AI types."
+    category: "Foundations"
+    priority: "high"
+    difficulty: "beginner"
+    learning_objectives:
+      - "Define Generative AI."
+      - "Differentiate between Generative AI, Machine Learning, and traditional AI."
+      - "Identify common use cases for generative models."
+
+  - id: "llm_architecture"
+    title: "Large Language Models (LLMs)"
+    description: "Learn about LLM architectures, training, and fine-tuning."
+    category: "Foundations"
+    priority: "high"
+    difficulty: "intermediate"
+    learning_objectives:
+      - "Understand the transformer architecture."
+      - "Explain pre-training vs fine-tuning."
+      - "Identify techniques like prompt engineering."
+
+  - id: "responsible_ai"
+    title: "Responsible AI Practices"
+    description: "Learn Google's Responsible AI principles and how to apply them."
+    category: "Governance"
+    priority: "high"
+    difficulty: "beginner"
+    learning_objectives:
+      - "Explain Google's AI principles."
+      - "Identify potential biases in GenAI."
+      - "Implement safety filters and content moderation."
+
+  - id: "vertex_ai_studio"
+    title: "Vertex AI Studio"
+    description: "Using Vertex AI Studio to interact with and prototype generative models."
+    category: "Tools"
+    priority: "medium"
+    difficulty: "intermediate"
+    learning_objectives:
+      - "Navigate the Vertex AI Studio interface."
+      - "Test prompts and adjust parameters (temperature, top-k)."
+      - "Evaluate model outputs."

@@ -4,7 +4,7 @@
 The AI Study Coach is a multi-agent application that helps students prepare for technical certifications. By providing your certification goal, time until the exam, and study availability, the coach will eventually be able to generate study plans, explain topics, and test your knowledge.
 
 ## Technology Stack
-- **Language**: Python 3.11+
+- **Language**: Python 3.12+
 - **Framework**: Google ADK
 - **LLM**: Gemini API
 - **Data Validation**: Pydantic v2
@@ -43,8 +43,8 @@ To run all tests and quality checks, use:
 ```
 
 ## Roadmap
-- Milestone 1: Project Foundation (Current)
-- Milestone 2: Study Planner Agent (Planned)
+- Milestone 1: Project Foundation (Done)
+- Milestone 2: Study Planner Agent (Current)
 - Milestone 3: Topic Expert Agent (Planned)
 - Milestone 4: Quiz Generator Agent (Planned)
 - Milestone 5: Multi-Agent Orchestration (Planned)
