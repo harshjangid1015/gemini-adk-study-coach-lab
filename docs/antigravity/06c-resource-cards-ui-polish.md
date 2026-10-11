@@ -285,3 +285,96 @@ uv run mypy .
 ## 8. Known Limitations
 - Sandboxed headless browser environments without arm64 Playwright binary drivers perform automated verification via Streamlit's official `AppTest` framework.
 - Video playback within `st.video` requires browser network connectivity to YouTube's CDN.
+
+---
+
+# M6-C BUG FIX: STREAMLIT IMPORT & VIRTUAL ENVIRONMENT RESOLUTION
+
+## 1. Problem Description & Bug Report
+When starting Streamlit directly or running inside the Docker container:
+```bash
+uv run streamlit run ui/app.py
+```
+Streamlit started on port 8501, but immediately crashed with:
+```text
+ModuleNotFoundError: No module named 'ui'
+File: ui/app.py
+Failing import: from ui.components.resource_cards import render_resource_grid
+```
+Additionally, the developer shell had an external/unrelated `VIRTUAL_ENV` exported from another workspace (`ai-search-journey-lab/.venv`), risking execution in an unisolated environment if `VIRTUAL_ENV` was inherited.
+
+## 2. Root Cause Analysis
+1. **Streamlit Execution Directory vs Repository Root**:
+   When Streamlit executes `streamlit run ui/app.py`, Streamlit by default places the script's enclosing directory (`/app/ui` or `./ui`) at index 0 of `sys.path`. When `ui/app.py` attempts `from ui.components.resource_cards import ...`, Python looks inside `./ui` for a package named `ui` (i.e. `./ui/ui/`), which does not exist, triggering `ModuleNotFoundError: No module named 'ui'`.
+2. **Docker Container PYTHONPATH**:
+   In `Dockerfile`, `ENV PYTHONPATH=/app/src` only included `/app/src`. The root directory `/app` (containing the `ui/` package) was missing from the container's environment `PYTHONPATH`.
+3. **Environment Isolation**:
+   Streamlit execution needed a self-contained, deterministic root resolution mechanism that operates independently of whatever `VIRTUAL_ENV` or working directory is active.
+
+## 3. Implementation Details & Fix
+1. **Dynamic Path Resolution in `ui/app.py`**:
+   Added defensive `sys.path` bootstrapping at the very beginning of `ui/app.py` before local package imports:
+   ```python
+   from pathlib import Path
+   import sys
+
+   # Ensure project root and src are reliably on sys.path for direct streamlit execution
+   PROJECT_ROOT = Path(__file__).resolve().parent.parent
+   if str(PROJECT_ROOT) not in sys.path:
+       sys.path.insert(0, str(PROJECT_ROOT))
+   SRC_DIR = PROJECT_ROOT / "src"
+   if str(SRC_DIR) not in sys.path:
+       sys.path.insert(0, str(SRC_DIR))
+   ```
+   This guarantees that both `from ui.components...` and `from study_coach...` imports resolve correctly regardless of how Streamlit is invoked.
+2. **Preserved Package Structure**:
+   `ui/components/resource_cards.py` and `ui/components/__init__.py` remain intact without moving any files.
+3. **Updated Dockerfile**:
+   Configured container environment to include both `/app` and `/app/src`:
+   ```dockerfile
+   # Set Python path to find app root (ui package) and src package
+   ENV PYTHONPATH=/app:/app/src
+   ```
+
+## 4. Verification & Validation Results
+All verifications executed in a clean shell with `VIRTUAL_ENV` unset (`env -u VIRTUAL_ENV`):
+
+1. **Direct Streamlit Server Execution (Local Port 8502)**:
+   ```bash
+   env -u VIRTUAL_ENV uv run streamlit run ui/app.py --server.headless true --server.port 8502
+   ```
+   - **Result**: Uvicorn server started cleanly on `:::8502`. Zero `ModuleNotFoundError`. Process polled healthy.
+2. **Streamlit AppTest Verification**:
+   - `AppTest.from_file('ui/app.py')` executed with 0 runtime exceptions.
+   - Resource grid rendering tested across topics:
+     - `genai_concepts`: 4 branded SVG resource cards rendered.
+     - `llm_architecture`: 2 real YouTube thumbnail cards (`https://i.ytimg.com/vi/wjZofJX0v4M/hqdefault.jpg`, `https://i.ytimg.com/vi/eMlx5fFNoYc/hqdefault.jpg`) + 3 branded SVG cards rendered.
+3. **Docker Container Verification**:
+   - Image build: `docker compose build` -> SUCCESS.
+   - Container direct Python execution:
+     ```bash
+     docker run --rm --entrypoint python gemini-adk-study-coach-lab-study-coach-ui -c "from ui.components.resource_cards import render_resource_grid; print('OK')"
+     ```
+     -> Output: `OK`
+   - Container AppTest execution:
+     ```bash
+     docker run --rm --entrypoint python gemini-adk-study-coach-lab-study-coach-ui -c "<AppTest script>"
+     ```
+     -> Output: `AppTest executed in container with 0 exceptions!`
+   - Docker Compose full stack:
+     ```bash
+     docker compose up --build -d
+     docker compose ps
+     # Container study-coach-workshop-ui: Up (healthy), port 8501:8501
+     curl -f http://localhost:8501/_stcore/health -> ok
+     docker compose logs -> Uvicorn server started on 0.0.0.0:8501, zero errors
+     docker compose down -> cleaned up
+     ```
+4. **Full Regression Quality Gates**:
+   ```bash
+   uv run ruff check .          # All checks passed!
+   uv run ruff format --check . # 73 files already formatted
+   uv run mypy .                # Success: no issues found in 55 source files
+   uv run pytest -q             # 96 passed in 2.16s
+   ```
+

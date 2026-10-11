@@ -30,8 +30,8 @@ RUN uv export --frozen --no-dev --no-editable --no-hashes -o requirements.txt \
 COPY src/ /app/src/
 COPY ui/ /app/ui/
 
-# Set Python path to find src package
-ENV PYTHONPATH=/app/src
+# Set Python path to find app root (ui package) and src package
+ENV PYTHONPATH=/app:/app/src
 
 # Create a non-root application user
 RUN useradd -m -u 1000 appuser && \
