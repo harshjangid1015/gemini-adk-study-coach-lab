@@ -11,3 +11,4 @@
 8. Run all quality checks after each milestone.
 9. Update README when behavior changes.
 10. Do not prematurely implement future milestones.
+11. Every completed milestone document must contain: Objective and scope, Full Antigravity instructions, Files created or modified, Validation commands, Actual test results, Git commit hash, Git tag, and Known limitations.
