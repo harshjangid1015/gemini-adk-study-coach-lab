@@ -1,12 +1,23 @@
-"""Compact learning resource cards with real provider brand logos for Streamlit."""
+"""Compact learning resource cards with real provider brand logos and sharing for Streamlit."""
 
 import html
 from pathlib import Path
-from urllib.parse import urlparse
 
 import streamlit as st
 
 from study_coach.models.learning_resource import LearningResource
+from study_coach.services.provider_registry import (
+    ProviderInfo,
+    extract_url_hostname,
+    resolve_provider_for_url,
+)
+from study_coach.services.resource_sharing import (
+    generate_share_text,
+    get_email_share_url,
+    get_facebook_share_url,
+    get_linkedin_share_url,
+    get_x_twitter_share_url,
+)
 
 # Assets directory for provider brand SVG logos
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets" / "provider_icons"
@@ -14,93 +25,39 @@ ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets" / "provider_icons
 # In-memory cache for SVG markup to avoid repeated disk reads
 _SVG_CACHE: dict[str, str] = {}
 
-
-def extract_url_hostname(url: str) -> str | None:
-    """Extracts, validates, and normalizes the lowercase hostname from a URL.
-
-    Rejects empty, malformed, or unsupported URL schemes (must be http or https).
-    """
-    if not url or not isinstance(url, str):
-        return None
-
-    cleaned_url = url.strip()
-    try:
-        parsed = urlparse(cleaned_url)
-        if parsed.scheme.lower() not in ("http", "https"):
-            return None
-        hostname = (parsed.hostname or "").lower().strip()
-        return hostname if hostname else None
-    except (ValueError, AttributeError):
-        return None
+__all__ = [
+    "ASSETS_DIR",
+    "extract_url_hostname",
+    "get_provider_icon_name",
+    "get_provider_logo_svg",
+    "render_resource_card",
+    "render_resource_grid",
+]
 
 
 def get_provider_icon_name(url: str) -> str:
-    """Maps a validated URL hostname to a trusted provider logo asset name.
-
-    Strict hostname-based rules:
-    - cloud.google.com -> google-cloud
-    - developers.google.com -> google-developers
-    - google.com & verified *.google.com / *.google subdomains -> google
-    - youtube.com, www.youtube.com, m.youtube.com, youtu.be, *.youtube.com -> youtube
-    - github.com, *.github.com -> github
-    - huggingface.co, *.huggingface.co -> huggingface
-    - linkedin.com, *.linkedin.com -> linkedin
-    - Any other domain or invalid scheme -> external-resource (neutral fallback)
-    """
-    hostname = extract_url_hostname(url)
-    if not hostname:
-        return "external-resource"
-
-    # 1. Google Cloud exact / subdomains
-    if hostname == "cloud.google.com" or hostname.endswith(".cloud.google.com"):
-        return "google-cloud"
-
-    # 2. Google Developers exact
-    if hostname == "developers.google.com":
-        return "google-developers"
-
-    # 3. YouTube domains
-    if hostname in ("youtube.com", "youtu.be") or hostname.endswith(
-        (".youtube.com", ".youtu.be")
-    ):
-        return "youtube"
-
-    # 4. GitHub domains
-    if hostname == "github.com" or hostname.endswith(".github.com"):
-        return "github"
-
-    # 5. Hugging Face domains
-    if hostname == "huggingface.co" or hostname.endswith(".huggingface.co"):
-        return "huggingface"
-
-    # 6. LinkedIn domains
-    if hostname == "linkedin.com" or hostname.endswith(".linkedin.com"):
-        return "linkedin"
-
-    # 7. Other verified Google subdomains (e.g. ai.google, deepmind.google, www.google.com)
-    if hostname == "google.com" or hostname.endswith((".google.com", ".google")):
-        return "google"
-
-    # Neutral fallback for arbitrary / external domains
-    return "external-resource"
+    """Returns the base SVG icon asset filename for a given URL via the provider registry."""
+    provider_info = resolve_provider_for_url(url)
+    return provider_info.icon_asset.replace(".svg", "")
 
 
-def get_provider_logo_svg(icon_name: str) -> str:
-    """Loads and caches authentic SVG icon markup for the given icon name."""
-    if icon_name in _SVG_CACHE:
-        return _SVG_CACHE[icon_name]
+def get_provider_logo_svg(icon_asset_filename: str) -> str:
+    """Loads and caches authentic SVG icon markup for the given icon asset filename."""
+    if icon_asset_filename in _SVG_CACHE:
+        return _SVG_CACHE[icon_asset_filename]
 
-    icon_path = ASSETS_DIR / f"{icon_name}.svg"
+    if not icon_asset_filename.endswith(".svg"):
+        icon_asset_filename = f"{icon_asset_filename}.svg"
+
+    icon_path = ASSETS_DIR / icon_asset_filename
     if not icon_path.is_file():
-        # Fall back to neutral external resource icon
         icon_path = ASSETS_DIR / "external-resource.svg"
 
     try:
         svg_content = icon_path.read_text(encoding="utf-8").strip()
-        _SVG_CACHE[icon_name] = svg_content
+        _SVG_CACHE[icon_asset_filename] = svg_content
         return svg_content
     except (OSError, UnicodeDecodeError):
-        # Ultimate inline fallback if filesystem fails
         fallback_svg = (
             '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" '
             'fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
@@ -112,7 +69,7 @@ def get_provider_logo_svg(icon_name: str) -> str:
 
 
 def render_resource_card(res: LearningResource) -> None:
-    """Renders a clean, compact learning resource card with genuine provider logo.
+    """Renders a clean, compact learning resource card with authentic provider logo and sharing controls.
 
     Card contains ONLY:
     - Genuine provider brand logo (approx 28px)
@@ -120,18 +77,18 @@ def render_resource_card(res: LearningResource) -> None:
     - Provider, resource type, and official/community classification
     - Free / access label badge
     - Concise short description (maximum two lines)
-    - Clickable resource link button
+    - Compact action controls: [Open ↗], [Copy Link], and [Share ▾] popover
     """
     with st.container(border=True):
         url_str = str(res.url)
-        icon_name = get_provider_icon_name(url_str)
-        svg_markup = get_provider_logo_svg(icon_name)
+        provider_info: ProviderInfo = resolve_provider_for_url(url_str)
+        svg_markup = get_provider_logo_svg(provider_info.icon_asset)
 
         # 1. Header line: Authentic Provider Logo (~28px) + Resource Title
         st.markdown(
             f'<div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px;">'
             f'<div style="flex-shrink: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;" '
-            f'aria-label="{html.escape(res.provider)} logo" title="{html.escape(res.provider)}">'
+            f'aria-label="{html.escape(provider_info.icon_alt)}" title="{html.escape(provider_info.display_name)}">'
             f"{svg_markup}"
             f"</div>"
             f'<div style="flex-grow: 1; font-size: 16px; font-weight: 600; line-height: 1.3;">'
@@ -161,12 +118,44 @@ def render_resource_card(res: LearningResource) -> None:
         )
         st.write(desc)
 
-        # 4. Clickable Resource Link
-        st.link_button(
-            f"🔗 Open {res.resource_type.title()}",
-            url_str,
-            use_container_width=True,
-        )
+        # 4. Compact Action Controls: [Open ↗], [Copy Link], [Share ▾]
+        col_act1, col_act2, col_act3 = st.columns([3, 2, 2])
+
+        with col_act1:
+            st.link_button(
+                f"🔗 Open {res.resource_type.title()}",
+                url_str,
+                use_container_width=True,
+            )
+
+        with col_act2, st.popover("📋 Copy", use_container_width=True):
+            st.caption("Direct Resource URL:")
+            st.code(url_str, language="text")
+
+        with col_act3, st.popover("📤 Share ▾", use_container_width=True):
+            st.caption("Share Resource:")
+            share_text = generate_share_text(res.title, res.provider)
+
+            st.link_button(
+                "💼 Share to LinkedIn",
+                get_linkedin_share_url(url_str),
+                use_container_width=True,
+            )
+            st.link_button(
+                "🐦 Share to X / Twitter",
+                get_x_twitter_share_url(url_str, share_text),
+                use_container_width=True,
+            )
+            st.link_button(
+                "📘 Share to Facebook",
+                get_facebook_share_url(url_str),
+                use_container_width=True,
+            )
+            st.link_button(
+                "✉️ Email Resource",
+                get_email_share_url(url_str, res.title, res.provider),
+                use_container_width=True,
+            )
 
 
 def render_resource_grid(

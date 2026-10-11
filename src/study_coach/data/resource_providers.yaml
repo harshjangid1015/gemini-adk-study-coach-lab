@@ -1,0 +1,193 @@
+providers:
+  - provider_id: "google_cloud"
+    display_name: "Google Cloud"
+    accepted_domains:
+      - "cloud.google.com"
+      - "*.cloud.google.com"
+    icon_asset: "google-cloud.svg"
+    icon_alt: "Google Cloud logo"
+    icon_license_or_source: "Google Brand Resource Center guidelines (official platform mark)"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "google_developers"
+    display_name: "Google Developers"
+    accepted_domains:
+      - "developers.google.com"
+    icon_asset: "google-developers.svg"
+    icon_alt: "Google Developers logo"
+    icon_license_or_source: "Google Brand Resource Center guidelines"
+    fallback_icon: "google.svg"
+
+  - provider_id: "google_skills_boost"
+    display_name: "Google Cloud Skills Boost"
+    accepted_domains:
+      - "cloudskillsboost.google"
+      - "*.cloudskillsboost.google"
+      - "skillsboost.google"
+    icon_asset: "google-skills.svg"
+    icon_alt: "Google Skills Boost logo"
+    icon_license_or_source: "Google Cloud Training and Certification brand"
+    fallback_icon: "google-cloud.svg"
+
+  - provider_id: "google"
+    display_name: "Google"
+    accepted_domains:
+      - "google.com"
+      - "*.google.com"
+      - "*.google"
+    icon_asset: "google.svg"
+    icon_alt: "Google logo"
+    icon_license_or_source: "Google Brand Resource Center public mark"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "youtube"
+    display_name: "YouTube"
+    accepted_domains:
+      - "youtube.com"
+      - "*.youtube.com"
+      - "youtu.be"
+      - "*.youtu.be"
+    icon_asset: "youtube.svg"
+    icon_alt: "YouTube logo"
+    icon_license_or_source: "YouTube Brand Guidelines vector mark"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "github"
+    display_name: "GitHub"
+    accepted_domains:
+      - "github.com"
+      - "*.github.com"
+    icon_asset: "github.svg"
+    icon_alt: "GitHub logo"
+    icon_license_or_source: "GitHub Logos and Usage guidelines (monochrome Invertocat mark)"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "huggingface"
+    display_name: "Hugging Face"
+    accepted_domains:
+      - "huggingface.co"
+      - "*.huggingface.co"
+    icon_asset: "huggingface.svg"
+    icon_alt: "Hugging Face logo"
+    icon_license_or_source: "Hugging Face Brand Assets guidelines"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "medium"
+    display_name: "Medium"
+    accepted_domains:
+      - "medium.com"
+      - "*.medium.com"
+    icon_asset: "medium.svg"
+    icon_alt: "Medium logo"
+    icon_license_or_source: "Medium Brand Guidelines emblem"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "dev_to"
+    display_name: "DEV Community"
+    accepted_domains:
+      - "dev.to"
+      - "*.dev.to"
+    icon_asset: "dev-to.svg"
+    icon_alt: "DEV Community logo"
+    icon_license_or_source: "Forem / DEV Community public brand badge"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "dzone"
+    display_name: "DZone"
+    accepted_domains:
+      - "dzone.com"
+      - "*.dzone.com"
+    icon_asset: "dzone.svg"
+    icon_alt: "DZone logo"
+    icon_license_or_source: "DZone Media Brand identity"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "hackernoon"
+    display_name: "HackerNoon"
+    accepted_domains:
+      - "hackernoon.com"
+      - "*.hackernoon.com"
+    icon_asset: "hackernoon.svg"
+    icon_alt: "HackerNoon logo"
+    icon_license_or_source: "HackerNoon brand identity badge"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "infoq"
+    display_name: "InfoQ"
+    accepted_domains:
+      - "infoq.com"
+      - "*.infoq.com"
+    icon_asset: "infoq.svg"
+    icon_alt: "InfoQ logo"
+    icon_license_or_source: "C4Media / InfoQ brand identity"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "linkedin"
+    display_name: "LinkedIn"
+    accepted_domains:
+      - "linkedin.com"
+      - "*.linkedin.com"
+    icon_asset: "linkedin.svg"
+    icon_alt: "LinkedIn logo"
+    icon_license_or_source: "LinkedIn Brand Center mark"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "stackoverflow"
+    display_name: "Stack Overflow"
+    accepted_domains:
+      - "stackoverflow.com"
+      - "*.stackoverflow.com"
+    icon_asset: "stackoverflow.svg"
+    icon_alt: "Stack Overflow logo"
+    icon_license_or_source: "Stack Overflow Brand Resources icon"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "freecodecamp"
+    display_name: "freeCodeCamp"
+    accepted_domains:
+      - "freecodecamp.org"
+      - "*.freecodecamp.org"
+    icon_asset: "freecodecamp.svg"
+    icon_alt: "freeCodeCamp logo"
+    icon_license_or_source: "freeCodeCamp open source brand mark"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "kaggle"
+    display_name: "Kaggle"
+    accepted_domains:
+      - "kaggle.com"
+      - "*.kaggle.com"
+    icon_asset: "kaggle.svg"
+    icon_alt: "Kaggle logo"
+    icon_license_or_source: "Kaggle / Google brand guidelines"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "coursera"
+    display_name: "Coursera"
+    accepted_domains:
+      - "coursera.org"
+      - "*.coursera.org"
+    icon_asset: "coursera.svg"
+    icon_alt: "Coursera logo"
+    icon_license_or_source: "Coursera Brand Assets guidelines"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "edx"
+    display_name: "edX"
+    accepted_domains:
+      - "edx.org"
+      - "*.edx.org"
+    icon_asset: "edx.svg"
+    icon_alt: "edX logo"
+    icon_license_or_source: "2U / edX Brand Assets guidelines"
+    fallback_icon: "external-resource.svg"
+
+  - provider_id: "arxiv"
+    display_name: "arXiv"
+    accepted_domains:
+      - "arxiv.org"
+      - "*.arxiv.org"
+    icon_asset: "arxiv.svg"
+    icon_alt: "arXiv logo"
+    icon_license_or_source: "Cornell University arXiv identity mark"
+    fallback_icon: "external-resource.svg"

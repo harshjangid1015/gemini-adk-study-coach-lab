@@ -175,3 +175,44 @@ resources:
     verification_status: "verified"
     is_official: false
     tags: ["video", "attention", "self-attention", "matrix-math"]
+
+  - resource_id: "freecodecamp_genai_handbook"
+    topic_ids:
+      - "genai_concepts"
+      - "llm_architecture"
+    title: "freeCodeCamp: The Generative AI & LLM Developer Handbook"
+    provider: "freeCodeCamp"
+    resource_type: "Article"
+    url: "https://www.freecodecamp.org/news/generative-ai-handbook/"
+    short_description: "Comprehensive open tutorial detailing prompt engineering, vector databases, RAG architecture, and model evaluation."
+    experience_level: "beginner"
+    estimated_minutes: 35
+    language: "English"
+    exam_domain: "Domain 1: Understand Generative AI Concepts and Fundamentals"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: false
+    tags: ["article", "tutorial", "llm-handbook", "prompt-engineering"]
+
+  - resource_id: "kaggle_genai_microcourse"
+    topic_ids:
+      - "vertex_ai_studio"
+      - "genai_concepts"
+    title: "Kaggle: Intro to Generative AI with Google Cloud"
+    provider: "Kaggle"
+    resource_type: "Interactive tutorial"
+    url: "https://www.kaggle.com/learn/intro-to-ai-ethics"
+    short_description: "Interactive browser tutorial on responsible AI, fairness, bias mitigation, and foundational generative models."
+    experience_level: "beginner"
+    estimated_minutes: 40
+    language: "English"
+    exam_domain: "Domain 3: Responsible AI Practices and Governance"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: false
+    tags: ["kaggle", "tutorial", "ethics", "responsible-ai"]
+

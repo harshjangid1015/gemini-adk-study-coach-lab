@@ -38,25 +38,29 @@ A versioned, strictly verified catalog of external learning resources is maintai
 - `thumbnail_url`: Optional verified HTTPS preview or thumbnail URL
 - `verification_status`: `verified` or `unverified`
 
-### Verified Resources Catalog & Thumbnail Sources
-| Resource ID | Title | Provider | Type | Duration | Official | Thumbnail Source |
+### Verified Resources Catalog & Provider Logos
+| Resource ID | Title | Provider | Type | Duration | Official | Brand Logo Asset |
 |---|---|---|---|---|---|---|
-| `google_genai_leader_exam_guide` | Generative AI Leader Certification Exam Guide | Google Cloud | Official exam guide | 20 min | Yes | Branded 16:9 SVG card |
-| `vertex_ai_genai_docs` | Vertex AI Generative AI Documentation & Overview | Google Cloud | Official documentation | 25 min | Yes | Branded 16:9 SVG card |
-| `google_ml_crash_course_llm` | Google Machine Learning Crash Course - Large Language Models | Google Developers | Interactive tutorial | 30 min | Yes | Branded 16:9 SVG card |
-| `google_responsible_ai_practices` | Google Responsible AI Practices and Principles | Google | Official documentation | 20 min | Yes | Branded 16:9 SVG card |
-| `vertex_ai_studio_quickstart` | Vertex AI Studio Prompt Design & Prototyping Quickstart | Google Cloud | Official documentation | 15 min | Yes | Branded 16:9 SVG card |
-| `google_cloud_rag_grounding_repo` | Vertex AI Search & Grounding Reference Architecture | Google Cloud Platform | GitHub repository | 30 min | Yes | Branded 16:9 SVG card |
-| `huggingface_llm_course_intro` | Hugging Face LLM Course - Chapter 1: Introduction | Hugging Face | Article | 25 min | No | Branded 16:9 SVG card |
-| `3b1b_transformer_video` | Visualizing Transformers & Attention Mechanisms | 3Blue1Brown | Video | 27 min | No | YouTube HQ: `https://i.ytimg.com/vi/wjZofJX0v4M/hqdefault.jpg` |
-| `3b1b_attention_video` | Attention in Transformers, Visually Explained | 3Blue1Brown | Video | 26 min | No | YouTube HQ: `https://i.ytimg.com/vi/eMlx5fFNoYc/hqdefault.jpg` |
+| `google_genai_leader_exam_guide` | Generative AI Leader Certification Exam Guide | Google Cloud | Official exam guide | 20 min | Yes | `google-cloud.svg` |
+| `google_cloud_genai_docs` | Vertex AI Generative AI Documentation & Overview | Google Cloud | Official documentation | 30 min | Yes | `google-cloud.svg` |
+| `google_ml_crash_course_llm` | Google Machine Learning Crash Course - Large Language Models | Google Developers | Interactive tutorial | 45 min | Yes | `google-developers.svg` |
+| `google_responsible_ai_practices` | Google Responsible AI Practices and Principles | Google | Official documentation | 20 min | Yes | `google.svg` |
+| `vertex_ai_studio_quickstart` | Vertex AI Studio Prompt Design & Prototyping Quickstart | Google Cloud | Official documentation | 25 min | Yes | `google-cloud.svg` |
+| `google_cloud_rag_grounding_repo` | Vertex AI Search & Grounding Reference Architecture | Google Cloud Platform | GitHub repository | 35 min | Yes | `github.svg` |
+| `huggingface_llm_course_intro` | Hugging Face LLM Course - Chapter 1: Introduction | Hugging Face | Article | 30 min | No | `huggingface.svg` |
+| `3b1b_transformer_video` | Visualizing Transformers & Attention Mechanisms | 3Blue1Brown | Video | 27 min | No | `youtube.svg` |
+| `3b1b_attention_video` | Attention in Transformers, Visually Explained | 3Blue1Brown | Video | 22 min | No | `youtube.svg` |
+| `freecodecamp_genai_handbook` | Generative AI & LLM Developer Handbook | freeCodeCamp | Article | 35 min | No | `freecodecamp.svg` |
+| `kaggle_genai_microcourse` | Intro to Generative AI with Google Cloud | Kaggle | Interactive tutorial | 40 min | No | `kaggle.svg` |
 
-### Thumbnail Resolution Pipeline
-1. **YouTube Video Detection:** Parsed via `extract_youtube_video_id` supporting `youtube.com/watch?v=`, `youtu.be/`, `youtube.com/embed/`, and `youtube.com/v/`. Video ID is validated against 11-character alphanumeric regex (`^[a-zA-Z0-9_-]{11}$`).
-2. **Official YouTube HQ Thumbnail:** Returns `https://i.ytimg.com/vi/{video_id}/hqdefault.jpg`.
-3. **Explicit Metadata Preview:** Returns `thumbnail_url` if configured in resource metadata.
-4. **Sleek 16:9 SVG Fallback:** Self-contained high-contrast dark gradient graphic with provider attribution, official badges, and duration estimates.
-5. **Embedded Player:** Non-autoplay Streamlit `st.video` expandable component for seamless in-app viewing without session loss.
+### Provider Brand Resolution & Sharing Pipeline
+1. **Hostname-Driven Domain Matching:** Parsed via `urllib.parse.urlparse` and evaluated against [`src/study_coach/data/resource_providers.yaml`](file:///Users/hastimal.jangid/Desktop/hmeb/GitHub/gemini-adk-study-coach-lab/src/study_coach/data/resource_providers.yaml) supporting 19 platforms (Google Cloud, YouTube, GitHub, Hugging Face, Medium, DEV Community, DZone, HackerNoon, InfoQ, LinkedIn, Stack Overflow, freeCodeCamp, Kaggle, Coursera, edX, arXiv).
+2. **Authentic 28px Vector Logos:** Inline vector SVGs loaded from `ui/assets/provider_icons/` with zero large thumbnails, zero broken images, and accessible aria labels.
+3. **Privacy-Safe Sharing Controls:**
+   - `[🔗 Open <Type>]`: Direct link to verified resource.
+   - `[📋 Copy]`: Popover with direct code copy block.
+   - `[📤 Share ▾]`: Popover with pre-encoded sharing intents for LinkedIn, X/Twitter, Facebook, and Email.
+   - **Privacy Policy:** Strictly shares only public resource title and URL; student profiles and session IDs are never leaked.
 
 ### Licensing & Link Verification Policy
 - All links are tested for public availability and 200 HTTP response.
