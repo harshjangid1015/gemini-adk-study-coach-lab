@@ -206,3 +206,24 @@ docker compose --profile observability ps
 
 1. **Evaluation Runtime Duration**: Live Gemini model requests take 60–90 seconds to evaluate all 4 scenarios across root coordinator, topic expert, quiz generator, and study planner. The UI uses an asynchronous spinner and lock to prevent UI lockup or duplicate requests.
 2. **Prometheus Health Origin**: When accessing Streamlit from a remote client, `localhost:3000` links assume standard developer workstation port forwarding.
+
+---
+
+## M7-B UI Fix — Grafana and Tempo Button Alignment
+
+### Issue & Root Cause
+In the Streamlit Agent Ops screen:
+1. "Open Grafana" and "Open Tempo Traces" buttons wrapped across multiple lines on standard column widths.
+2. Long full URLs inside cards consumed excessive width and distorted card layouts.
+3. Card vertical alignment and button heights were uneven across columns.
+
+### Solution
+1. **Button Styling & Single-Line Labels**:
+   - Replaced multi-line labels with clean, recommended single-line labels: `"Open Grafana ↗"` and `"Open Tempo Traces ↗"`.
+   - Applied CSS `white-space: nowrap`, `display: block`, `width: 100%`, and standard `10px 16px` padding.
+2. **Card Layout & URL Truncation**:
+   - Implemented CSS flexbox with `flex-direction: column` and `justify-content: space-between` to guarantee equal card heights and bottom-aligned buttons.
+   - Truncated raw URLs into clean host/path labels (`localhost:3000`, `localhost:3000/explore`, `localhost:9090/targets`) with `text-overflow: ellipsis` and `title` tooltips containing the full destination link.
+3. **Automated UI Regression Tests**:
+   - Added `test_agent_ops_tab_portal_cards_and_button_alignment` in [`tests/unit/test_evaluation_runner.py`](../../tests/unit/test_evaluation_runner.py) to assert `white-space: nowrap`, exact single-line button text, clean truncated endpoint badges, and destination URL integrity.
+

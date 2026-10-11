@@ -80,15 +80,52 @@ def render_agent_ops_tab() -> None:
     st.subheader("📊 Observability Portals")
     col_link1, col_link2, col_link3 = st.columns(3)
 
+    card_style = """
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        min-height: 200px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 18px;
+        background-color: #f9f9f9;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    """
+
+    btn_base_style = """
+        display: block;
+        width: 100%;
+        text-align: center;
+        white-space: nowrap;
+        padding: 10px 16px;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        box-sizing: border-box;
+    """
+
     with col_link1:
         st.markdown(
             f"""
-            <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background-color: #f9f9f9;">
-                <h4 style="margin-top: 0;">📈 Grafana Dashboard</h4>
-                <p style="color: #555; font-size: 14px;">View agent invocations, token consumption, latency histograms, and budget alerts.</p>
-                <a href="{GRAFANA_URL}" target="_blank" style="display: inline-block; padding: 8px 16px; background-color: #1a73e8; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
-                    Open Grafana Dashboard ↗
-                </a>
+            <div style="{card_style}">
+                <div>
+                    <h4 style="margin: 0 0 8px 0; color: #1a73e8;">📈 Grafana Dashboard</h4>
+                    <p style="color: #555; font-size: 13px; line-height: 1.4; margin-bottom: 12px;">
+                        View real-time agent invocations, token consumption, latency histograms, and alert panels.
+                    </p>
+                    <div style="margin-bottom: 16px;">
+                        <span style="font-size: 11px; color: #777; text-transform: uppercase; font-weight: bold;">Endpoint:</span>
+                        <code style="font-size: 12px; background: #e8eaed; padding: 2px 6px; border-radius: 4px; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{GRAFANA_URL}">localhost:3000</code>
+                    </div>
+                </div>
+                <div>
+                    <a href="{GRAFANA_URL}" target="_blank" style="{btn_base_style} background-color: #1a73e8;">
+                        Open Grafana ↗
+                    </a>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -97,12 +134,22 @@ def render_agent_ops_tab() -> None:
     with col_link2:
         st.markdown(
             f"""
-            <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background-color: #f9f9f9;">
-                <h4 style="margin-top: 0;">🔍 Tempo Trace Explorer</h4>
-                <p style="color: #555; font-size: 14px;">Inspect distributed spans, tool execution, and root-agent-to-subagent delegations.</p>
-                <a href="{TEMPO_URL}" target="_blank" style="display: inline-block; padding: 8px 16px; background-color: #0f9d58; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
-                    Open Tempo Explore ↗
-                </a>
+            <div style="{card_style}">
+                <div>
+                    <h4 style="margin: 0 0 8px 0; color: #0f9d58;">🔍 Tempo Trace Explorer</h4>
+                    <p style="color: #555; font-size: 13px; line-height: 1.4; margin-bottom: 12px;">
+                        Inspect OpenTelemetry distributed spans, tool execution, and root-agent delegations.
+                    </p>
+                    <div style="margin-bottom: 16px;">
+                        <span style="font-size: 11px; color: #777; text-transform: uppercase; font-weight: bold;">Endpoint:</span>
+                        <code style="font-size: 12px; background: #e8eaed; padding: 2px 6px; border-radius: 4px; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{TEMPO_URL}">localhost:3000/explore</code>
+                    </div>
+                </div>
+                <div>
+                    <a href="{TEMPO_URL}" target="_blank" style="{btn_base_style} background-color: #0f9d58;">
+                        Open Tempo Traces ↗
+                    </a>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -111,12 +158,22 @@ def render_agent_ops_tab() -> None:
     with col_link3:
         st.markdown(
             f"""
-            <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background-color: #f9f9f9;">
-                <h4 style="margin-top: 0;">🎯 Prometheus Targets</h4>
-                <p style="color: #555; font-size: 14px;">Verify scraper health, active endpoints, and raw scrape intervals.</p>
-                <a href="{PROMETHEUS_TARGETS_URL}" target="_blank" style="display: inline-block; padding: 8px 16px; background-color: #ea4335; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
-                    Open Prometheus ↗
-                </a>
+            <div style="{card_style}">
+                <div>
+                    <h4 style="margin: 0 0 8px 0; color: #ea4335;">🎯 Prometheus Targets</h4>
+                    <p style="color: #555; font-size: 13px; line-height: 1.4; margin-bottom: 12px;">
+                        Verify active scraper health, discovered endpoints, and raw scrape intervals.
+                    </p>
+                    <div style="margin-bottom: 16px;">
+                        <span style="font-size: 11px; color: #777; text-transform: uppercase; font-weight: bold;">Endpoint:</span>
+                        <code style="font-size: 12px; background: #e8eaed; padding: 2px 6px; border-radius: 4px; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{PROMETHEUS_TARGETS_URL}">localhost:9090/targets</code>
+                    </div>
+                </div>
+                <div>
+                    <a href="{PROMETHEUS_TARGETS_URL}" target="_blank" style="{btn_base_style} background-color: #ea4335;">
+                        Open Prometheus ↗
+                    </a>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,

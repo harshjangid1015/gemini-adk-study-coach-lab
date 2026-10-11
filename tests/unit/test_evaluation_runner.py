@@ -113,3 +113,36 @@ def test_check_prometheus_health_offline() -> None:
     """Verifies that check_prometheus_health returns False when connection fails."""
     with patch("urllib.request.urlopen", side_effect=OSError("Connection refused")):
         assert check_prometheus_health() is False
+
+
+def test_agent_ops_tab_portal_cards_and_button_alignment() -> None:
+    """Verifies that Agent Ops portal cards render single-line buttons and correct URLs."""
+    from streamlit.testing.v1 import AppTest
+
+    app_path = Path(__file__).resolve().parent.parent.parent / "ui" / "app.py"
+    at = AppTest.from_file(str(app_path), default_timeout=30)
+    at.query_params["tab"] = "ops"
+    at.run()
+    assert not at.exception
+
+    # Find markdown blocks containing portal cards
+    md_values = [m.value for m in at.markdown]
+    combined_html = " ".join(md_values)
+
+    # 1. Verify single-line recommended button labels exist
+    assert "Open Grafana ↗" in combined_html
+    assert "Open Tempo Traces ↗" in combined_html
+    assert "Open Prometheus ↗" in combined_html
+
+    # 2. Verify white-space: nowrap is applied to button style to guarantee no multi-line wrapping
+    assert "white-space: nowrap" in combined_html
+
+    # 3. Verify truncated clean endpoint labels are displayed instead of giant raw query URLs
+    assert "localhost:3000" in combined_html
+    assert "localhost:3000/explore" in combined_html
+    assert "localhost:9090/targets" in combined_html
+
+    # 4. Verify target destination URLs are preserved correctly
+    assert "http://localhost:3000/d/study-coach-main/" in combined_html
+    assert "http://localhost:3000/explore" in combined_html
+    assert "http://localhost:9090/targets" in combined_html
