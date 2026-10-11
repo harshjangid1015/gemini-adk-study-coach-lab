@@ -18,11 +18,16 @@ if str(SRC_DIR) not in sys.path:
 import streamlit as st
 from dotenv import load_dotenv
 
+from study_coach.evaluation import EvaluationRunner
 from study_coach.models.quiz import QuizResult, QuizSubmission
 from study_coach.models.student import StudentProfile
 from study_coach.observability import setup_tracing, start_metrics_server
 from study_coach.services.workshop_facade import WorkshopFacade
-from ui.components.resource_cards import render_resource_grid
+from ui.components import (
+    render_agent_ops_tab,
+    render_evaluations_tab,
+    render_resource_grid,
+)
 
 # Load environment configuration
 load_dotenv()
@@ -82,9 +87,10 @@ if "selected_topic_id" not in st.session_state:
     st.session_state.selected_topic_id = None
 if "_prev_quick_check_topic_id" not in st.session_state:
     st.session_state._prev_quick_check_topic_id = None
-if "main_nav_tab" not in st.session_state:
-    st.session_state.main_nav_tab = "📅 Study Plan"
+if "eval_runner" not in st.session_state:
+    st.session_state.eval_runner = EvaluationRunner()
 
+eval_runner: EvaluationRunner = st.session_state.eval_runner
 facade: WorkshopFacade = st.session_state.facade
 session_id: str = st.session_state.session_id
 user_id: str = st.session_state.user_id
@@ -180,8 +186,10 @@ MAIN_NAV_OPTIONS = [
     "📖 Learn Topic",
     "📝 Practice Quiz",
     "🔄 Adaptive Plan",
+    "🔭 Agent Ops",
+    "🧪 Evaluations",
 ]
-tab_plan, tab_learn, tab_quiz, tab_adaptive = st.tabs(
+tab_plan, tab_learn, tab_quiz, tab_adaptive, tab_ops, tab_evals = st.tabs(
     MAIN_NAV_OPTIONS,
     key="main_nav_tab",
     on_change="rerun",
@@ -879,3 +887,15 @@ with tab_adaptive:
                         )
     else:
         st.info("Start a session in the sidebar to test adaptive replanning.")
+
+# ==============================================================================
+# TAB 5: AGENT OPS & OBSERVABILITY
+# ==============================================================================
+with tab_ops:
+    render_agent_ops_tab()
+
+# ==============================================================================
+# TAB 6: AGENT EVALUATIONS SUITE
+# ==============================================================================
+with tab_evals:
+    render_evaluations_tab(runner=eval_runner, run_async_fn=run_async)

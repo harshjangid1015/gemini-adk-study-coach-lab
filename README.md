@@ -89,6 +89,8 @@ For architecture diagrams, configuration details, and privacy redaction rules, s
   - **Docker & Docker Compose Runtime**: Hardened, reproducible containerization using pinned Python 3.12 slim, locked dependencies via `uv.lock`, healthchecks, and non-root execution.
   - **OpenTelemetry & Distributed Tracing**: Google ADK `ADKObservabilityPlugin` bridging agent and tool lifecycles to OpenTelemetry spans; high-level `@trace_workflow_step` timing decorators; Tempo distributed trace storage; API key sanitization (`[REDACTED_API_KEY]`) and answer-key masking.
   - **Prometheus Metrics & Grafana Dashboard**: Application Prometheus metrics endpoint on port 8000 with pre-initialized metric series; Grafana pre-provisioned datasource configuration; 11-panel Grafana dashboard (`study-coach-main`).
+  - **Visual Agent Ops & Observability GUI**: Dedicated "🔭 Agent Ops" tab in Streamlit showing real-time Prometheus target health, container readiness, port mapping, and direct one-click launcher links to Grafana and Tempo trace explorer.
+  - **Visual Agent Evaluations Dashboard**: Interactive "🧪 Evaluations" tab in Streamlit featuring a user-triggered evaluation runner, scenario list, pass/fail status metrics, per-scenario latency timings, expandable audit cards, error messaging, and sanitized JSON report persistence (`docs/reports/recent_evaluation_report.json`).
   - **Deterministic & Live Agent Evaluation**: 19 deterministic contract tests in `tests/eval/` and a live Google ADK model evaluation runner in `tests/eval/run_live_evaluation.py` evaluating topic explanation, quiz generation, study planning, and coordinator routing.
 - **Planned**: Workshop-ready release package, distribution artifacts, and final verification.
 

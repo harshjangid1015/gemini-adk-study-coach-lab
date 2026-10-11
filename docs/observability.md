@@ -129,6 +129,16 @@ Grafana is pre-configured with auto-provisioned datasources and dashboards:
   - Access at: `http://localhost:3000/d/study-coach-main/study-coach-workshop-observability`
   - Anonymous admin access enabled for seamless local lab evaluation.
   - 11 pre-built panels tracking request rates, agent calls, tool invocations, average latencies, quiz submissions, and adaptive replanning counts.
+ 
+### 5.1 Visual Agent Ops UI (Streamlit Tab)
+The Streamlit application includes an interactive **"🔭 Agent Ops"** tab ([`ui/components/agent_ops.py`](../ui/components/agent_ops.py)) that provides:
+- Live Prometheus target reachability check (Port 9090).
+- OpenTelemetry Collector & Tempo Tracing readiness metrics.
+- Direct links with distinct portal cards:
+  - **Open Grafana Dashboard**: Deep link to `http://localhost:3000/d/study-coach-main/...`
+  - **Open Tempo Trace Explorer**: Deep link to `http://localhost:3000/explore`
+  - **Open Prometheus Targets**: Direct link to `http://localhost:9090/targets`
+- Clear warning banner when background observability containers are offline, with exact launch command instructions.
 
 ---
 

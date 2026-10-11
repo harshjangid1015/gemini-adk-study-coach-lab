@@ -49,6 +49,14 @@ Inspection of the installed `google.adk.evaluation` module reveals:
 - **`google.adk.evaluation.EvalCase`**: Individual test case holding an `Invocation` sequence (user prompt, expected response, rubrics).
 - **Dependency Nuance**: `google-adk[eval]` requires Google Cloud Vertex AI SDK (`google.cloud.aiplatform` / `vertexai`). When deploying in environments using direct Gemini Developer API keys (`GOOGLE_GENAI_USE_VERTEXAI=FALSE`), the standalone live evaluation runner [`tests/eval/run_live_evaluation.py`](../tests/eval/run_live_evaluation.py) evaluates ADK agents directly via `InMemoryRunner`, maintaining 100% Google ADK compatibility without requiring Vertex AI enterprise projects.
 
+### 3.1 Reusable Evaluation Runner (`study_coach.evaluation.EvaluationRunner`)
+To bridge deterministic CLI tests and the interactive Streamlit user interface, `EvaluationRunner` provides:
+- **Thread-safe concurrency control**: Prevents duplicate overlapping evaluation runs via `asyncio.Lock()`.
+- **Execution timeouts**: Applies per-scenario timeouts (`timeout_seconds=60.0`) so evaluation never hangs student learning sessions.
+- **Report persistence**: Automatically writes execution summaries to [`docs/reports/recent_evaluation_report.json`](../docs/reports/recent_evaluation_report.json).
+- **Sanitization & Privacy**: Strictly excludes Gemini API keys, student identifiers, user prompts, and private quiz answer keys from stored reports.
+- **Visual Streamlit Dashboard**: Integrated into **"🧪 Evaluations"** tab ([`ui/components/evaluations_view.py`](../ui/components/evaluations_view.py)) with pass/fail indicators, latency stats, expandable scenario details, and formatted error notifications.
+
 ---
 
 ## 4. Live Model Evaluation Results

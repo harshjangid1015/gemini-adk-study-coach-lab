@@ -1,5 +1,9 @@
 """Models Package."""
 
+from study_coach.models.evaluation import (
+    EvaluationScenarioResult,
+    EvaluationSummaryReport,
+)
 from study_coach.models.learning_session import LearningProgress, LearningSession
 from study_coach.models.quiz import (
     QuestionFeedback,
@@ -14,6 +18,8 @@ from study_coach.models.study_plan import StudyActivity, StudyDay, StudyPlan
 from study_coach.models.topic_explanation import TopicExplanation
 
 __all__ = [
+    "EvaluationScenarioResult",
+    "EvaluationSummaryReport",
     "LearningProgress",
     "LearningSession",
     "QuestionFeedback",
