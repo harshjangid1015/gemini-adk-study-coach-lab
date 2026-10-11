@@ -1,23 +1,23 @@
 {
-  "run_id": "eval_755aa787",
-  "timestamp": "2026-10-11T19:36:12.952809+00:00",
+  "run_id": "eval_2c282051",
+  "timestamp": "2026-10-11T21:07:56.786958+00:00",
   "model": "gemini-3.8-flash",
   "total_scenarios": 4,
   "passed_scenarios": 4,
   "failed_scenarios": 0,
-  "total_duration_seconds": 94.28,
+  "total_duration_seconds": 82.79,
   "scenarios": [
     {
       "scenario_id": "scenario_3",
       "scenario_description": "Explain grounding and RAG for a beginner",
       "target_agent": "topic_expert",
       "status": "PASS",
-      "duration_seconds": 27.92,
+      "duration_seconds": 21.13,
       "details": "Topic 'Generative AI Concepts' generated successfully. Key concepts: Artificial Intelligence (AI), Machine Learning (ML), Deep Learning (DL).",
       "error": null,
       "metadata": {
         "topic_id": "genai_concepts",
-        "concept_count": 8,
+        "concept_count": 9,
         "objective_count": 3
       }
     },
@@ -26,7 +26,7 @@
       "scenario_description": "Generate three formative MCQs",
       "target_agent": "quiz_generator",
       "status": "PASS",
-      "duration_seconds": 16.41,
+      "duration_seconds": 13.58,
       "details": "3 formative MCQs successfully generated with all 4 options sanitized.",
       "error": null,
       "metadata": {
@@ -38,7 +38,7 @@
       "scenario_description": "7 days, intermediate, 45 minutes daily plan request",
       "target_agent": "study_planner",
       "status": "PASS",
-      "duration_seconds": 18.34,
+      "duration_seconds": 16.83,
       "details": "7-day study plan generated strictly respecting 45 min/day budget.",
       "error": null,
       "metadata": {
@@ -51,11 +51,11 @@
       "scenario_description": "14 days, beginner, 90 minutes daily plan request",
       "target_agent": "root_agent",
       "status": "PASS",
-      "duration_seconds": 31.61,
-      "details": "Root coordinator routed & answered (7411 chars response).",
+      "duration_seconds": 31.25,
+      "details": "Root coordinator routed & answered (7768 chars response).",
       "error": null,
       "metadata": {
-        "response_chars": 7411
+        "response_chars": 7768
       }
     }
   ]
