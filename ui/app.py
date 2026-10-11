@@ -189,6 +189,31 @@ MAIN_NAV_OPTIONS = [
     "🔭 Agent Ops",
     "🧪 Evaluations",
 ]
+
+# Query param direct navigation support
+TAB_QUERY_PARAM_MAP: dict[str, str] = {
+    "plan": "📅 Study Plan",
+    "study_plan": "📅 Study Plan",
+    "learn": "📖 Learn Topic",
+    "topic": "📖 Learn Topic",
+    "quiz": "📝 Practice Quiz",
+    "practice": "📝 Practice Quiz",
+    "adaptive": "🔄 Adaptive Plan",
+    "ops": "🔭 Agent Ops",
+    "agent_ops": "🔭 Agent Ops",
+    "observability": "🔭 Agent Ops",
+    "eval": "🧪 Evaluations",
+    "evals": "🧪 Evaluations",
+    "evaluations": "🧪 Evaluations",
+}
+
+requested_tab_param = st.query_params.get("tab", "").strip().lower()
+if requested_tab_param in TAB_QUERY_PARAM_MAP:
+    target_tab_label = TAB_QUERY_PARAM_MAP[requested_tab_param]
+    if st.session_state.get("_last_synced_query_tab") != requested_tab_param:
+        st.session_state.main_nav_tab = target_tab_label
+        st.session_state._last_synced_query_tab = requested_tab_param
+
 tab_plan, tab_learn, tab_quiz, tab_adaptive, tab_ops, tab_evals = st.tabs(
     MAIN_NAV_OPTIONS,
     key="main_nav_tab",

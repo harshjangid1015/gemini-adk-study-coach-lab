@@ -25,10 +25,24 @@ You need a Gemini API key to run this application.
 3. Copy `.env.example` to `.env`.
 4. Update `GOOGLE_API_KEY` in your `.env` file with your key.
 
-## Local ADK Launch
-To launch the Google ADK developer UI locally, run:
+## Local Developer Lab Launch
+To launch the unified Developer Lab Launcher GUI (default, port 8500), run:
 ```bash
 ./scripts/run_local.sh
+```
+
+From this launcher GUI (`http://localhost:8500`), you can access real-time status indicators and open:
+1. **Google ADK Developer UI** (`http://127.0.0.1:8000`)
+2. **Streamlit Study Coach** (`http://localhost:8501`)
+3. **Streamlit Agent Ops Tab** (`http://localhost:8501/?tab=ops`)
+4. **Streamlit Evaluations Tab** (`http://localhost:8501/?tab=eval`)
+5. **Grafana Dashboard** (`http://localhost:3000`)
+6. **Grafana Tempo Trace Explorer** (`http://localhost:3000/explore`)
+7. **Prometheus Scraper & TSDB** (`http://localhost:9090`)
+
+To launch only the standalone Google ADK Developer UI directly:
+```bash
+./scripts/run_local.sh --adk-only
 ```
 
 ## Example Conversation
