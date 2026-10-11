@@ -2,16 +2,16 @@
 
 ```mermaid
 graph TD
-    User([Student]) --> UI[Web UI / Workshop UI (Planned)]
-    UI --> Coordinator[Study Coach Coordinator Agent]
+    User([Student]) --> UI["Web UI / Workshop UI (Planned)"]
+    UI --> Coordinator["Study Coach Coordinator Agent"]
     
-    Coordinator --> Planner[Study Planner Agent (Planned)]
-    Coordinator --> Expert[Topic Expert Agent (Planned)]
-    Coordinator --> Quiz[Quiz Generator Agent (Planned)]
+    Coordinator --> Planner["Study Planner Agent (Planned)"]
+    Coordinator --> Expert["Topic Expert Agent (Planned)"]
+    Coordinator --> Quiz["Quiz Generator Agent (Planned)"]
     
-    Planner -.-> Profile[(Student Profile Data)]
-    Expert -.-> Docs[(Certification Knowledge)]
-    Quiz -.-> QBank[(Question Bank)]
+    Planner -.-> Profile[("Student Profile Data")]
+    Expert -.-> Docs[("Certification Knowledge")]
+    Quiz -.-> QBank[("Question Bank")]
 ```
 
 ### Note on Features

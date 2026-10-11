@@ -442,3 +442,6 @@ All checks passed!
 ## Known limitations
 - The `study_coach` agent uses hardcoded mock capability disclaimers inside instructions rather than coordinating actual specialized agents.
 - Tests were executed entirely offline. The live agent invocation logic via ADK is deferred until the environment has an active `GOOGLE_API_KEY`.
+
+## Documentation Updates
+- Fixed Mermaid syntax rendering error in architecture diagram by adding quotes around node labels.
