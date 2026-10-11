@@ -415,7 +415,22 @@ All checks passed!
 - Full conversational memory retention across deep multi-turn chat sessions without plan state re-prompting is planned for M5 (adaptive orchestration).
 - Scored quizzes and interactive testing are intentionally deferred to M4.
 
-### 7. Git Commit and Tag
-- Commit: `to be recorded`
+### 7. Step-by-Step Testing Audit Table
+
+| Component Tested | Test Command | Expected Result | Actual Result | Pass/Fail | Fixes Applied | Remaining Limitations |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Curriculum Tools (`topic_tools.py`)** | `uv run pytest tests/unit/test_topic_tools.py -v` | Topic retrieval, keyword search, learning objectives, related topics lookup work deterministically. | 7/7 tests passed. Unknown topics return `None` or raise `ValueError`. | **PASS** | Refined typing of dictionary retrieval for strict mypy compliance. | Searches match against static YAML fields. |
+| **TopicExplanation Schema (`topic_explanation.py`)** | `uv run pytest tests/unit/test_topic_explanation.py -v` | Enforces valid topic ID, experience level, non-empty fields, and valid related topics. | 7/7 tests passed. Invalid experience levels, empty strings, and unknown topics rejected. | **PASS** | Caught specific `(FileNotFoundError, TypeError, ValueError)` instead of broad `Exception` for Ruff `BLE001`. | Schema validation is local and deterministic. |
+| **Agent Delegation & Config (`topic_expert.py`, `agent.py`)** | `uv run pytest tests/integration/test_topic_expert.py -v` | Root agent registers `topic_expert` and `study_planner` as sub-agents with appropriate routing prompts. | 3/3 tests passed. Sub-agents and tools verified. | **PASS** | Updated mypy typing for agent tool inspection. | Complex state tracking between agents will be expanded in M5. |
+| **Regression Suite (M1, M2, M3)** | `uv run pytest -q` | All 33 unit and integration tests pass across M1 models, M2 study planner, and M3 topic expert. | `33 passed in 0.70s` | **PASS** | Sorted `__all__` imports for Ruff `RUF022`. | None. Complete backward compatibility preserved. |
+| **Code Formatting & Linting** | `uv run ruff check . && uv run ruff format --check .` | 0 lint errors, all files formatted to 88 char line length. | `All checks passed! 33 files already formatted` | **PASS** | Auto-formatted code with Ruff. | None. |
+| **Static Type Checking** | `uv run mypy .` | Strict type checking passes across all source and test files. | `Success: no issues found in 21 source files` | **PASS** | Added type narrowing and cast for YAML dictionary access. | None. |
+| **Live Prompt A (Beginner Grounding & RAG)** | ADK Runner (`run_live` with `topic_expert`) | `study_coach` delegates to `topic_expert`; calls curriculum tools; outputs valid `TopicExplanation`. | Delegated cleanly to `topic_expert`, called 4 tools, returned validated `beginner` explanation. | **PASS** | Utilized ADK's `set_model_response` tool pattern natively. | Uses broad curriculum topic anchor (`genai_concepts`). |
+| **Live Prompt B (Advanced LLM Architecture)** | ADK Runner (`run_live` with `topic_expert`) | `study_coach` delegates to `topic_expert`; outputs advanced depth with system tradeoffs. | Delegated cleanly to `topic_expert`, returned validated `advanced` explanation. | **PASS** | Explicit prompting on technical mechanics in instructions. | None. |
+| **Live Prompt C (M2 Study Planner Regression)** | ADK Runner (`run_live` with `study_planner`) | `study_coach` delegates to `study_planner`; generates exactly 7 days $\le 45$ min/day. | Delegated cleanly to `study_planner`, generated 7 days (315 total minutes). | **PASS** | Verified zero regressions to M2 multi-agent routing. | Large multi-week plans constrained by token windows. |
+| **ADK Web UI Server** | `scripts/run_local.sh` (`uv run adk web`) | Server launches on `http://127.0.0.1:8000` and serves `src.study_coach`. | Server started cleanly; `GET /list-apps` returned `["src.study_coach"]`. | **PASS** | Ensured `root_agent` is exposed in `study_coach.agent`. | UI interaction is manual in local browser. |
+
+### 8. Git Commit and Tag
+- Commit: `31ac805225c5a81e4779076fa25032bc26dd8f6c`
 - Tag: `v0.3.0`
-- GitHub Push Status: Pending checkpoint.
+- GitHub Push Status: Successfully pushed to `origin/main` and tag `v0.3.0`.
