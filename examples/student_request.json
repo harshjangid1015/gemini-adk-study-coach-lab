@@ -1,0 +1,9 @@
+{
+    "certification_name": "Google Cloud Generative AI Leader",
+    "days_until_exam": 14,
+    "student_profile": {
+        "experience_level": "beginner",
+        "daily_study_minutes": 90,
+        "learning_preferences": ["video", "hands-on"]
+    }
+}
