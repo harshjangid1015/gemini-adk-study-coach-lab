@@ -11,7 +11,9 @@ The project is divided into eight sequential milestones, each representing a cle
 - **M4: Quiz Generator Agent** - Implement an agent to generate multiple-choice knowledge checks. (Completed in v0.4.0)
 - **M5: Multi-Agent Orchestration** - Connect all agents via a coordinating adaptive workflow. (Completed in v0.5.0)
 - **M6: Workshop UI & Docker** - Provide a web interface and containerize the application. (Completed in v0.6.0)
+- **M6-B: Learning Experience Enhancement** - Interactive diagrams, verified resources library, runnable Python examples, and LinkedIn sharing. ([`06b-learning-experience-enhancement.md`](file:///Users/hastimal.jangid/Desktop/hmeb/GitHub/gemini-adk-study-coach-lab/docs/antigravity/06b-learning-experience-enhancement.md))
 - **M7: Observability and Evaluation** - Add telemetry and agent evaluation tests.
 - **M8: Workshop-Ready Release** - Finalize documentation, examples, and release.
 
 Only one milestone should be implemented at a time. Future milestones remain as planned placeholders until instructed to be implemented.
+

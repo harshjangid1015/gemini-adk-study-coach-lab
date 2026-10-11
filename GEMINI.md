@@ -22,3 +22,5 @@
     - Verify live demos with real ADK Runner and ADK Web when API credentials are provided.
     - Document actual testing results with component, command, expected, actual, pass/fail, fixes, and limitations.
     - Enforce release gate: no commits, tags, or pushes until all verifications pass.
+13. Every Antigravity milestone and enhancement must archive the FULL original implementation instruction under `docs/antigravity/`. Append actual implementation and verification results without overwriting the original prompt.
+
