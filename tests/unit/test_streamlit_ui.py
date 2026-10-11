@@ -94,8 +94,12 @@ def test_streamlit_ui_day_4_resources(sample_study_plan: StudyPlan) -> None:
     )
     assert has_resources_header
 
-    # Verify Day 4 thumbnail cards rendered
-    assert len(at.image) > 0
+    # Verify compact resource cards rendered (titles and provider metadata present, NO thumbnail images)
+    assert len(at.image) == 0
+    has_card_title = any(
+        "Official Google Cloud Generative AI Leader" in text for text in markdown_texts
+    )
+    assert has_card_title
 
 
 def test_streamlit_ui_learn_topic_diagram_and_code() -> None:
@@ -132,8 +136,12 @@ def test_streamlit_ui_learn_topic_diagram_and_code() -> None:
     # Verify Code blocks are present
     assert len(at.code) >= 2  # tokenization demo and attention demo expected outputs
 
-    # Verify ResourceCard thumbnails rendered
-    assert len(at.image) > 0
+    # Verify compact resource cards rendered without thumbnail images
+    assert len(at.image) == 0
+    has_resource_title = any(
+        "Transformers Work" in text or "Attention" in text for text in markdown_texts
+    )
+    assert has_resource_title
 
 
 def test_streamlit_ui_weak_topic_remediation() -> None:
@@ -171,5 +179,10 @@ def test_streamlit_ui_weak_topic_remediation() -> None:
     )
     assert has_steps
 
-    # Verify thumbnail cards rendered for weak topic remediation
-    assert len(at.image) > 0
+    # Verify compact cards rendered for weak topic remediation with zero thumbnail images
+    assert len(at.image) == 0
+    has_remediation_resources = any(
+        "Transformers Work" in text or "Attention" in text or "Official Google" in text
+        for text in markdown_texts
+    )
+    assert has_remediation_resources

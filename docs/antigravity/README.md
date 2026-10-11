@@ -12,7 +12,8 @@ The project is divided into eight sequential milestones, each representing a cle
 - **M5: Multi-Agent Orchestration** - Connect all agents via a coordinating adaptive workflow. (Completed in v0.5.0)
 - **M6: Workshop UI & Docker** - Provide a web interface and containerize the application. (Completed in v0.6.0)
 - **M6-B: Learning Experience Enhancement** - Interactive diagrams, verified resources library, runnable Python examples, and LinkedIn sharing. ([`06b-learning-experience-enhancement.md`](file:///Users/hastimal.jangid/Desktop/hmeb/GitHub/gemini-adk-study-coach-lab/docs/antigravity/06b-learning-experience-enhancement.md))
-- **M6-C: Visual UI Polish — Resource Thumbnails** - 16:9 thumbnail cards, real YouTube thumbnail parser, SVG branded fallbacks, embedded video player, and responsive two-column grid. ([`06c-resource-cards-ui-polish.md`](file:///Users/hastimal.jangid/Desktop/hmeb/GitHub/gemini-adk-study-coach-lab/docs/antigravity/06c-resource-cards-ui-polish.md))
+- **M6-C: Streamlit Package Imports & Isolation** - Dynamic project-root path resolution and Docker environment alignment. ([`06c-resource-cards-ui-polish.md`](file:///Users/hastimal.jangid/Desktop/hmeb/GitHub/gemini-adk-study-coach-lab/docs/antigravity/06c-resource-cards-ui-polish.md))
+- **M6-D: Compact Resource Cards** - Replaced broken/large thumbnails with lightweight, compact cards featuring ~28px provider icons and zero image dependencies. ([`06d-compact-resource-cards.md`](file:///Users/hastimal.jangid/Desktop/hmeb/GitHub/gemini-adk-study-coach-lab/docs/antigravity/06d-compact-resource-cards.md))
 - **M7: Observability and Evaluation** - Add telemetry and agent evaluation tests.
 - **M8: Workshop-Ready Release** - Finalize documentation, examples, and release.
 
