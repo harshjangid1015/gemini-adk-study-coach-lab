@@ -117,8 +117,9 @@ The Streamlit interface ([`ui/app.py`](file:///Users/hastimal.jangid/Desktop/hme
    - 6 progressive-disclosure sub-tabs: Summary & Objectives, Architecture Diagram, Step-by-Step Lesson, Hands-On Python, Verified Resources, Practice & Share.
    - Native Mermaid architecture diagram rendering with component breakdowns and accessible text alternative.
    - Python code block with expected outputs.
-   - Practice preselection jump link.
-   - LinkedIn Share text generator with safe manual share link (zero score or answer-key exposure).
+   - **Interactive Quick Knowledge Check (M6-G):** 3 original MCQs dynamically crafted by the Quiz Generator agent and Gemini, selected via `st.radio`, graded deterministically in pure Python (100%, 66.7%, 33.3%, 0%), with immediate question-by-question feedback and answer keys protected on the server.
+   - **Seamless Practice Quiz Navigation (M6-G):** One-click transition that preselects the active topic and switches directly to the Practice Quiz tab without JavaScript hacks.
+   - **Enhanced LinkedIn Post Sharing (M6-G):** Standardized `"I'm learning about..."` draft with certification context, Gemini & ADK Study Coach attribution, hashtags, editable text area, one-click copyable code box, direct LinkedIn link, and manual pasting instructions.
 3. **Practice Quiz Tab:**
    - Context-aware preselection when launched from Learn Topic.
    - Deterministic scoring, diagnostic feedback, and sanitized questions.

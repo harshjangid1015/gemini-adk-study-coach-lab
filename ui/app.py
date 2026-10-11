@@ -18,7 +18,7 @@ if str(SRC_DIR) not in sys.path:
 import streamlit as st
 from dotenv import load_dotenv
 
-from study_coach.models.quiz import QuizSubmission
+from study_coach.models.quiz import QuizResult, QuizSubmission
 from study_coach.models.student import StudentProfile
 from study_coach.services.workshop_facade import WorkshopFacade
 from ui.components.resource_cards import render_resource_grid
@@ -63,6 +63,22 @@ if "user_id" not in st.session_state:
 
 if "preselected_quiz_topic" not in st.session_state:
     st.session_state.preselected_quiz_topic = None
+
+# M6-G Formative Quick Check state
+if "quick_check_quiz_id" not in st.session_state:
+    st.session_state.quick_check_quiz_id = None
+if "quick_check_questions" not in st.session_state:
+    st.session_state.quick_check_questions = None
+if "quick_check_selections" not in st.session_state:
+    st.session_state.quick_check_selections = {}
+if "quick_check_result" not in st.session_state:
+    st.session_state.quick_check_result = None
+if "selected_topic_id" not in st.session_state:
+    st.session_state.selected_topic_id = None
+if "_prev_quick_check_topic_id" not in st.session_state:
+    st.session_state._prev_quick_check_topic_id = None
+if "main_nav_tab" not in st.session_state:
+    st.session_state.main_nav_tab = "📅 Study Plan"
 
 facade: WorkshopFacade = st.session_state.facade
 session_id: str = st.session_state.session_id
@@ -138,9 +154,32 @@ with st.sidebar:
     else:
         st.warning("API Key: Not Found in .env")
 
+# Load curriculum topics and mapping
+curriculum_topics = facade.get_supported_curriculum_topics()
+topic_map = {f"{t['title']} ({t['id']})": t["id"] for t in curriculum_topics}
+
+
+def navigate_to_practice_quiz_callback(target_topic_id: str) -> None:
+    """Preselects topic and directly opens the Practice Quiz tab."""
+    st.session_state.preselected_quiz_topic = target_topic_id
+    st.session_state.main_nav_tab = "📝 Practice Quiz"
+    for label, tid in topic_map.items():
+        if tid == target_topic_id:
+            st.session_state["quiz_topic_select"] = label
+            break
+
+
 # Navigation Tabs
+MAIN_NAV_OPTIONS = [
+    "📅 Study Plan",
+    "📖 Learn Topic",
+    "📝 Practice Quiz",
+    "🔄 Adaptive Plan",
+]
 tab_plan, tab_learn, tab_quiz, tab_adaptive = st.tabs(
-    ["📅 Study Plan", "📖 Learn Topic", "📝 Practice Quiz", "🔄 Adaptive Plan"]
+    MAIN_NAV_OPTIONS,
+    key="main_nav_tab",
+    on_change="rerun",
 )
 
 # Fetch current session state
@@ -264,6 +303,7 @@ with tab_learn:
 
     if st.session_state.get("explained_topic"):
         exp = st.session_state.explained_topic
+        chosen_topic_id = exp.topic_id
         st.markdown(f"## {exp.topic_title} (`{exp.topic_id}`)")
         st.caption(
             f"Adapted Level: **{exp.experience_level.capitalize()}** | Official Exam Domain: Google Cloud Generative AI Leader"
@@ -356,43 +396,258 @@ with tab_learn:
                 st.info("Resources catalog currently being populated for this topic.")
 
         with learn_subtabs[5]:
-            st.markdown("### 🚀 Practice This Topic")
+            st.markdown("### 🚀 Practice & Share")
             st.write(
-                "Reinforce your understanding using comprehension checks or launch a full "
-                "5-question practice quiz evaluated deterministically by the Quiz Generator."
+                "Reinforce your understanding with an interactive 3-question Quick Knowledge Check, "
+                "or jump directly to a full 5-question formal practice quiz evaluated deterministically in Python."
             )
 
-            st.markdown("#### ❓ Self-Assessment Questions")
-            for q in exp.comprehension_questions:
-                st.markdown(f"- {q}")
+            # Invalidate stale quick check state only when topic actually changes
+            prev_topic = st.session_state.get("_prev_quick_check_topic_id")
+            if prev_topic is not None and prev_topic != chosen_topic_id:
+                st.session_state.quick_check_quiz_id = None
+                st.session_state.quick_check_questions = None
+                st.session_state.quick_check_selections = {}
+                st.session_state.quick_check_result = None
+            st.session_state._prev_quick_check_topic_id = chosen_topic_id
 
-            st.divider()
-            col_p1, col_p2 = st.columns(2)
-            with col_p1:
-                if st.button("📝 Open Practice Quiz for This Topic", type="primary"):
-                    st.session_state.preselected_quiz_topic = chosen_topic_id
-                    st.success(
-                        f"Topic `{chosen_topic_id}` preselected! Switch to the 'Practice Quiz' tab above."
+            st.session_state.selected_topic_id = chosen_topic_id
+
+            col_qc_left, col_qc_right = st.columns([1, 1], gap="medium")
+
+            # ------------------------------------------------------------------
+            # LEFT: Quick Knowledge Check (3 MCQs)
+            # ------------------------------------------------------------------
+            with col_qc_left, st.container(border=True):
+                st.markdown("#### ⚡ Quick Knowledge Check (3 MCQs)")
+                st.caption(
+                    "Formative self-assessment crafted by the Quiz Generator agent and Gemini. "
+                    "Deterministically scored in pure Python; answer keys remain protected on the backend."
+                )
+
+                qc_questions = st.session_state.get("quick_check_questions")
+                qc_id = st.session_state.get("quick_check_quiz_id")
+                qc_result: QuizResult | None = st.session_state.get(
+                    "quick_check_result"
+                )
+
+                if not qc_questions:
+                    st.info(
+                        f"Generate a 3-question formative check tailored for **{chosen_topic_id}** "
+                        f"at the **{experience_level}** level."
+                    )
+                    btn_gen_col, btn_full_col = st.columns([1, 1])
+                    with btn_gen_col:
+                        if st.button(
+                            "⚡ Generate Quick Check",
+                            type="primary",
+                            use_container_width=True,
+                            key=f"btn_gen_qc_{chosen_topic_id}",
+                        ):
+                            with st.spinner(
+                                "Quiz Generator agent is creating 3 original MCQs with Gemini..."
+                            ):
+                                try:
+                                    q_id, student_qs = run_async(
+                                        facade.generate_quick_check(
+                                            session_id=session_id,
+                                            user_id=user_id,
+                                            topic_id=chosen_topic_id,
+                                            experience_level=experience_level,
+                                        )
+                                    )
+                                    st.session_state.quick_check_quiz_id = q_id
+                                    st.session_state.quick_check_questions = student_qs
+                                    st.session_state.quick_check_selections = {}
+                                    st.session_state.quick_check_result = None
+                                    st.rerun()
+                                except (RuntimeError, ValueError) as err:
+                                    st.error(f"Error generating quick check: {err}")
+                    with btn_full_col:
+                        st.button(
+                            "📝 Start Practice Quiz",
+                            use_container_width=True,
+                            key=f"btn_nav_quiz_init_{chosen_topic_id}",
+                            on_click=navigate_to_practice_quiz_callback,
+                            args=(chosen_topic_id,),
+                        )
+                else:
+                    # Render the 3 interactive questions
+                    st.markdown(
+                        f"**Topic:** `{chosen_topic_id}` | **Items:** 3 Questions"
                     )
 
-            with col_p2:
+                    opt_letters = ["A", "B", "C", "D"]
+                    for idx, q in enumerate(qc_questions, 1):
+                        st.markdown(f"**Question {idx}:** {q.question_text}")
+                        radio_key = f"qc_radio_{qc_id}_{q.question_id}"
+                        prev_sel = st.session_state.quick_check_selections.get(
+                            q.question_id
+                        )
+                        sel_index = (
+                            opt_letters.index(prev_sel)
+                            if prev_sel in opt_letters
+                            else None
+                        )
+
+                        chosen_letter = st.radio(
+                            label=f"Choice for question {idx}",
+                            options=opt_letters,
+                            format_func=lambda letter, q=q: (
+                                f"{letter}) {q.options.get(letter, '')}"
+                            ),
+                            index=sel_index,
+                            key=radio_key,
+                            disabled=bool(qc_result),
+                            label_visibility="collapsed",
+                        )
+
+                        if chosen_letter and not qc_result:
+                            st.session_state.quick_check_selections[q.question_id] = (
+                                chosen_letter
+                            )
+
+                        # If graded, render immediate question feedback
+                        if qc_result:
+                            fb = next(
+                                (
+                                    f
+                                    for f in qc_result.question_feedback
+                                    if f.question_id == q.question_id
+                                ),
+                                None,
+                            )
+                            if fb:
+                                if fb.is_correct:
+                                    st.success(
+                                        f"✅ **Correct!** (Answer: **{fb.correct_answer}**)\n\n"
+                                        f"{fb.explanation}"
+                                    )
+                                else:
+                                    student_ans_str = fb.student_answer or "Unanswered"
+                                    st.error(
+                                        f"❌ **Incorrect.** (You selected: **{student_ans_str}** | Correct: **{fb.correct_answer}**)\n\n"
+                                        f"{fb.explanation}"
+                                    )
+
+                    st.divider()
+
+                    # Submission & Results Display
+                    if not qc_result:
+                        unanswered_count = len(qc_questions) - len(
+                            st.session_state.quick_check_selections
+                        )
+                        if unanswered_count > 0:
+                            st.caption(
+                                f"ℹ️ {unanswered_count} question(s) unselected (unanswered questions count as incorrect)."
+                            )
+
+                        if st.button(
+                            "✅ Submit / Check Answers",
+                            type="primary",
+                            use_container_width=True,
+                            key=f"btn_submit_qc_{qc_id}",
+                        ):
+                            sub = QuizSubmission(
+                                quiz_id=str(qc_id),
+                                student_answers=dict(
+                                    st.session_state.quick_check_selections
+                                ),
+                            )
+                            with st.spinner(
+                                "Scoring answers deterministically in pure Python..."
+                            ):
+                                try:
+                                    res = run_async(
+                                        facade.evaluate_quick_check(
+                                            session_id=session_id,
+                                            user_id=user_id,
+                                            submission=sub,
+                                        )
+                                    )
+                                    st.session_state.quick_check_result = res
+                                    st.rerun()
+                                except (RuntimeError, ValueError) as err:
+                                    st.error(f"Error evaluating quick check: {err}")
+                    else:
+                        # Display Formative Score Banner
+                        pct = qc_result.score_percentage
+                        if pct >= 70.0:
+                            st.success(
+                                f"🎯 **Quick Check Score: {pct:.1f}%** "
+                                f"({qc_result.correct_answers}/{qc_result.total_questions} correct)"
+                            )
+                        else:
+                            st.warning(
+                                f"💡 **Quick Check Score: {pct:.1f}%** "
+                                f"({qc_result.correct_answers}/{qc_result.total_questions} correct)"
+                            )
+
+                        st.caption(
+                            "🔒 **Formative isolation:** This check reinforces learning and does not alter "
+                            "formal quiz records, weak-topic classification, or adaptive plans."
+                        )
+
+                        qc_btn_col1, qc_btn_col2 = st.columns(2)
+                        with qc_btn_col1:
+                            if st.button(
+                                "🔄 Retry Quick Check",
+                                use_container_width=True,
+                                key=f"btn_retry_qc_{qc_id}",
+                            ):
+                                st.session_state.quick_check_quiz_id = None
+                                st.session_state.quick_check_questions = None
+                                st.session_state.quick_check_selections = {}
+                                st.session_state.quick_check_result = None
+                                st.rerun()
+                        with qc_btn_col2:
+                            st.button(
+                                "📝 Start Full Practice Quiz",
+                                type="primary",
+                                use_container_width=True,
+                                key=f"btn_nav_quiz_after_{qc_id}",
+                                on_click=navigate_to_practice_quiz_callback,
+                                args=(chosen_topic_id,),
+                            )
+
+            # ------------------------------------------------------------------
+            # RIGHT: Share My Learning
+            # ------------------------------------------------------------------
+            with col_qc_right, st.container(border=True):
                 st.markdown("#### 📢 Share My Learning")
-                share_text = (
-                    f"🎓 Just completed my deep dive into '{exp.topic_title}' for the "
-                    "Google Cloud Generative AI Leader certification with Gemini & ADK Study Coach! "
-                    "#GoogleCloud #GenerativeAI #StudyCoach #GeminiADK"
+                st.caption(
+                    "Broadcast your progress on LinkedIn to celebrate study milestones."
                 )
-                st.text_area(
-                    "LinkedIn Post Preview (Ready to copy):",
-                    value=share_text,
-                    height=100,
+
+                default_share_text = (
+                    f"I'm learning about '{exp.topic_title}' as part of my preparation for the "
+                    f"{certification_name} certification with Gemini & Google ADK Study Coach!\n\n"
+                    f"#GoogleCloud #GenerativeAI #StudyCoach #GeminiADK #ContinuousLearning"
                 )
+
+                share_post_text = st.text_area(
+                    "LinkedIn Post Preview (Editable):",
+                    value=default_share_text,
+                    height=125,
+                    key=f"share_preview_{chosen_topic_id}",
+                )
+
+                st.markdown("**Copy Post Text:**")
+                st.code(share_post_text, language="markdown")
+
                 st.link_button(
                     "🌐 Open LinkedIn Post Editor",
                     "https://www.linkedin.com/sharing/share-offsite/?url=https://cloud.google.com/learn/certification/generative-ai-leader",
+                    use_container_width=True,
+                )
+
+                st.info(
+                    "📋 **Sharing Instructions:** Modern LinkedIn sharing URLs do not support automated post text prefill. "
+                    "Click the copy button in the top-right corner of the code box above, then click **Open LinkedIn Post Editor** "
+                    "and paste your draft directly into the post editor."
                 )
                 st.caption(
-                    "🔒 Privacy notice: Does not automatically publish; zero student test scores or answer keys are shared."
+                    "🔒 Privacy Notice: Does not auto-publish. Zero test scores, quiz answers, or student credentials are shared."
                 )
 
 # ==============================================================================
@@ -416,11 +671,13 @@ with tab_quiz:
 
     q_col1, q_col2 = st.columns([1, 1])
     with q_col1:
+        sel_kwargs: dict[str, Any] = {"key": "quiz_topic_select"}
+        if "quiz_topic_select" not in st.session_state:
+            sel_kwargs["index"] = default_topic_idx
         quiz_topic_label = st.selectbox(
             "Select Quiz Topic",
             list(topic_map.keys()),
-            index=default_topic_idx,
-            key="quiz_topic_select",
+            **sel_kwargs,
         )
         quiz_topic_id = topic_map[quiz_topic_label]
     with q_col2:

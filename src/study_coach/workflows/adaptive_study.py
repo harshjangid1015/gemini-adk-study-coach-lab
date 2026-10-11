@@ -164,6 +164,104 @@ class AdaptiveStudyWorkflow:
         # Return strictly sanitized student-facing questions
         return validated_quiz.to_student_view()
 
+    async def generate_quick_check(
+        self,
+        session_id: str,
+        user_id: str,
+        topic_id: str,
+        experience_level: str | None = None,
+    ) -> tuple[str, list[StudentQuizQuestion]]:
+        """Generates exactly 3 formative practice questions for a topic.
+
+        Saves full Quiz under a distinct quick_check_* namespace in private session
+        so answer keys are never exposed and formal quiz state/scores are untouched.
+        Returns (quick_check_id, list[StudentQuizQuestion]).
+        """
+        session = await self.session_service.get_session(
+            session_id=session_id, user_id=user_id
+        )
+        if not session:
+            raise ValueError(
+                f"Session '{session_id}' not found. Please create a plan or session first."
+            )
+
+        level = experience_level or session.student_profile.experience_level
+        prompt = (
+            f"Generate a 3-question formative practice quiz on '{topic_id}' "
+            f"for {session.certification_name} suitable for a {level} learner."
+        )
+
+        qc_id = f"quick_check_{topic_id}_{len(session.stored_quizzes) + 1}"
+        runner = InMemoryRunner(agent=quiz_generator)
+        await runner.session_service.create_session(
+            app_name=runner.app_name,
+            user_id=user_id,
+            session_id=f"{session_id}_{qc_id}",
+        )
+
+        quiz_dict: dict[str, Any] | None = None
+        async for event in runner.run_async(
+            user_id=user_id,
+            session_id=f"{session_id}_{qc_id}",
+            new_message=types.Content(
+                role="user",
+                parts=[types.Part.from_text(text=prompt)],
+            ),
+        ):
+            if event.content and event.content.parts:
+                for part in event.content.parts:
+                    fc = getattr(part, "function_call", None)
+                    if fc and fc.name == "set_model_response" and fc.args:
+                        quiz_dict = fc.args.get("response") or fc.args
+
+        if not quiz_dict:
+            raise RuntimeError(
+                f"Quiz Generator did not return a structured Quiz for quick check '{topic_id}'"
+            )
+
+        validated_quiz = Quiz.model_validate(quiz_dict)
+        if len(validated_quiz.questions) > 3:
+            validated_quiz = validated_quiz.model_copy(
+                update={"questions": validated_quiz.questions[:3]}
+            )
+
+        # Store in private session state under dedicated quick_check key
+        # Crucially: do NOT set session.current_quiz_id so formal practice quiz state is untouched
+        session.stored_quizzes[qc_id] = validated_quiz
+        await self.session_service.save_session(session)
+
+        return qc_id, validated_quiz.to_student_view()
+
+    async def evaluate_quick_check(
+        self,
+        session_id: str,
+        user_id: str,
+        submission: QuizSubmission,
+    ) -> QuizResult:
+        """Deterministically evaluates formative quick check answers.
+
+        Uses deterministic Python grading (grade_quiz).
+        Crucially: does NOT update formal quiz scores, does NOT modify weak_topics,
+        and does NOT append to formal session.quiz_results.
+        """
+        session = await self.session_service.get_session(
+            session_id=session_id, user_id=user_id
+        )
+        if not session:
+            raise ValueError(f"Session '{session_id}' not found.")
+
+        target_qc_id = submission.quiz_id
+        if not session.stored_quizzes or target_qc_id not in session.stored_quizzes:
+            raise ValueError(
+                f"Quick check quiz '{target_qc_id}' not found in private session."
+            )
+
+        full_quiz = session.stored_quizzes[target_qc_id]
+
+        # Deterministic Python grading (zero LLM / zero network)
+        result = grade_quiz(full_quiz, submission)
+        return result
+
     async def submit_quiz_answers(
         self,
         session_id: str,

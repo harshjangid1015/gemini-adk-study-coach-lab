@@ -153,6 +153,34 @@ class WorkshopFacade:
             submission=submission,
         )
 
+    async def generate_quick_check(
+        self,
+        session_id: str,
+        user_id: str,
+        topic_id: str,
+        experience_level: str | None = None,
+    ) -> tuple[str, list[StudentQuizQuestion]]:
+        """Generates a 3-question formative quick check with answers hidden from the student view."""
+        return await self.workflow.generate_quick_check(
+            session_id=session_id,
+            user_id=user_id,
+            topic_id=topic_id,
+            experience_level=experience_level,
+        )
+
+    async def evaluate_quick_check(
+        self,
+        session_id: str,
+        user_id: str,
+        submission: QuizSubmission,
+    ) -> QuizResult:
+        """Deterministically scores a quick check formative assessment without mutating formal quiz history."""
+        return await self.workflow.evaluate_quick_check(
+            session_id=session_id,
+            user_id=user_id,
+            submission=submission,
+        )
+
     async def get_learning_progress(
         self,
         session_id: str,
