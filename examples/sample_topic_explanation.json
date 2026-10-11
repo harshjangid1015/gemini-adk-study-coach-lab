@@ -1,0 +1,36 @@
+{
+  "topic_id": "genai_concepts",
+  "topic_title": "Generative AI Concepts",
+  "experience_level": "beginner",
+  "learning_objectives": [
+    "Define Generative AI.",
+    "Differentiate between Generative AI, Machine Learning, and traditional AI.",
+    "Identify common use cases for generative models."
+  ],
+  "key_concepts": [
+    "Generative AI",
+    "Discriminative AI",
+    "Foundation Models",
+    "Prompt Engineering",
+    "Hallucination"
+  ],
+  "explanation": "Generative AI is a modern subfield of Artificial Intelligence and Machine Learning that focuses on generating entirely new content—such as text, code, images, audio, or synthetic data—based on learned patterns. While traditional (discriminative) machine learning classifies data or predicts numerical outcomes (e.g., distinguishing spam from legitimate email), generative models predict the most probable sequence of words, pixels, or tokens to produce brand-new artifacts in response to human prompts.",
+  "practical_example": "A retail organization utilizes Google Cloud Vertex AI Studio to test and prototype a customer support assistant. Instead of hand-coding rules for thousands of product inquiries, developers supply customer order data and prompt Gemini to draft contextual, personalized return authorization emails.",
+  "common_misconceptions": [
+    "Generative AI models possess human consciousness or verify factual truth internally.",
+    "Generative AI is a complete replacement for traditional classification and tabular predictive models.",
+    "All AI applications require generative LLMs regardless of task simplicity."
+  ],
+  "related_topics": [
+    "llm_architecture",
+    "vertex_ai_studio"
+  ],
+  "comprehension_questions": [
+    "How does a generative AI model differ fundamentally from a discriminative classification model?",
+    "Why is it important to provide grounded context when generating business-critical customer communications?"
+  ],
+  "source_references": [
+    "Google Cloud Generative AI Leader Certification Exam Guide",
+    "Google Cloud Architecture Center: Overview of Generative AI on Google Cloud"
+  ]
+}

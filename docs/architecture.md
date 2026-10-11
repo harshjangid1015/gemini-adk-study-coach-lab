@@ -6,13 +6,13 @@ graph TD
     UI --> Coordinator["Study Coach Coordinator Agent"]
     
     Coordinator --> Planner["Study Planner Agent"]
-    Coordinator --> Expert["Topic Expert Agent (Planned)"]
+    Coordinator --> Expert["Topic Expert Agent"]
     Coordinator --> Quiz["Quiz Generator Agent (Planned)"]
     
-    Planner -.-> Profile[("Student Profile Data")]
-    Expert -.-> Docs[("Certification Knowledge")]
-    Quiz -.-> QBank[("Question Bank")]
+    Planner -.-> Profile[("Curriculum & Planning Tools")]
+    Expert -.-> Docs[("Curriculum Knowledge & Topic Tools")]
+    Quiz -.-> QBank[("Question Bank (Planned)")]
 ```
 
 ### Note on Features
-The `Study Coach Coordinator Agent` and `Study Planner Agent` are currently implemented for Milestone 2. The web UI and other agents (`Topic Expert Agent`, `Quiz Generator Agent`) are planned for future milestones.
+The `Study Coach Coordinator Agent`, `Study Planner Agent`, and `Topic Expert Agent` are implemented as of Milestone 3. The web UI and `Quiz Generator Agent` are planned for future milestones.

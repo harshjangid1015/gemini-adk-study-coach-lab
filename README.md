@@ -44,8 +44,8 @@ To run all tests and quality checks, use:
 
 ## Roadmap
 - Milestone 1: Project Foundation (Done)
-- Milestone 2: Study Planner Agent (Current)
-- Milestone 3: Topic Expert Agent (Planned)
+- Milestone 2: Study Planner Agent (Done)
+- Milestone 3: Topic Expert Agent (Done)
 - Milestone 4: Quiz Generator Agent (Planned)
 - Milestone 5: Multi-Agent Orchestration (Planned)
 - Milestone 6: Workshop UI & Docker (Planned)
@@ -53,5 +53,10 @@ To run all tests and quality checks, use:
 - Milestone 8: Workshop-Ready Release (Planned)
 
 ## Current Functionality vs Planned Features
-- **Current**: The project has the core structure, the foundation of the Google ADK root agent (`study_coach`), data models for the student profile, and testing scripts.
-- **Planned**: Generating study plans, asking questions, providing quizzes, and orchestrating multiple specialist agents.
+- **Current**: 
+  - Root coordinator agent (`study_coach`) routing student requests.
+  - **Study Planner Agent (`study_planner`)**: Generates structured, deterministic-checked study plans adhering to daily minute limits and curriculum topic IDs.
+  - **Topic Expert Agent (`topic_expert`)**: Explains certification topics adapted to beginner, intermediate, and advanced levels, with Google Cloud examples, common misconceptions, and comprehension checks.
+  - Pydantic models for student profiles, requests, study plans, and topic explanations.
+  - Deterministic curriculum tools reading `google_cloud_genai_leader.yaml`.
+- **Planned**: Scored quiz generator agent, adaptive replanning orchestration, workshop web UI, Docker containerization, and evaluation telemetry.
