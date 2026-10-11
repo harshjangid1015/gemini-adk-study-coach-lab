@@ -47,18 +47,20 @@ To run all tests and quality checks, use:
 - Milestone 2: Study Planner Agent (Done)
 - Milestone 3: Topic Expert Agent (Done)
 - Milestone 4: Quiz Generator Agent (Done)
-- Milestone 5: Multi-Agent Orchestration (Planned)
+- Milestone 5: Multi-Agent Orchestration (Done)
 - Milestone 6: Workshop UI & Docker (Planned)
 - Milestone 7: Observability and Evaluation (Planned)
 - Milestone 8: Workshop-Ready Release (Planned)
 
 ## Current Functionality vs Planned Features
 - **Current**: 
-  - Root coordinator agent (`study_coach`) routing student requests.
+  - Root coordinator agent (`study_coach`) routing student requests across all specialists.
   - **Study Planner Agent (`study_planner`)**: Generates structured, deterministic-checked study plans adhering to daily minute limits and curriculum topic IDs.
   - **Topic Expert Agent (`topic_expert`)**: Explains certification topics adapted to beginner, intermediate, and advanced levels, with Google Cloud examples, common misconceptions, and comprehension checks.
   - **Quiz Generator Agent (`quiz_generator`)**: Generates practice multiple-choice questions anchored in the curriculum, protects answer keys before submission, and grades student answers deterministically using Python.
-  - Pydantic models for student profiles, study requests, study plans, topic explanations, and quizzes/evaluations.
-  - Deterministic curriculum and grading tools reading `google_cloud_genai_leader.yaml`.
-- **Planned**: Adaptive multi-agent orchestration, workshop web UI, Docker containerization, and evaluation telemetry.
+  - **Adaptive Learning Orchestration Workflow (`AdaptiveStudyWorkflow`)**: Coordinates plan creation, topic learning, practice quiz generation, sanitized question presentation, deterministic scoring, and weak-topic prioritized replanning.
+  - **Student Session State (`LearningSessionService`)**: In-memory session tracking powered by Google ADK `InMemorySessionService`.
+  - Pydantic models for student profiles, study requests, study plans, topic explanations, quizzes/evaluations, and learning sessions.
+  - Deterministic curriculum, planning, and grading tools reading `google_cloud_genai_leader.yaml`.
+- **Planned**: Workshop web UI, Docker containerization, and evaluation telemetry.
 

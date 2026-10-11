@@ -1,0 +1,922 @@
+{
+  "session_id": "live_sess_m5_sample",
+  "user_id": "live_student_m5_sample",
+  "student_profile": {
+    "experience_level": "beginner",
+    "daily_study_minutes": 90,
+    "learning_preferences": null
+  },
+  "certification_name": "Google Cloud Generative AI Leader",
+  "exam_deadline_or_days_remaining": 14,
+  "current_study_plan": {
+    "certification_name": "Google Cloud Generative AI Leader",
+    "days_until_exam": 11,
+    "daily_study_minutes": 90,
+    "days": [
+      {
+        "day_number": 1,
+        "title": "Weak Topic Focus: Generative AI Concepts Deep Dive",
+        "activities": [
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "learning",
+            "description": "Deep dive into Generative AI core definitions, taxonomy, and how GenAI differs from traditional AI and machine learning.",
+            "duration_minutes": 45
+          },
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "practice",
+            "description": "Scenario-based practice exercises classifying AI workloads and identifying suitable Generative AI use cases.",
+            "duration_minutes": 45
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 2,
+        "title": "GenAI Concepts Reinforcement & Introduction to LLMs",
+        "activities": [
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "review",
+            "description": "Spaced review and flashcards covering GenAI concepts, capabilities, and common business applications.",
+            "duration_minutes": 30
+          },
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "practice",
+            "description": "Targeted practice questions distinguishing discriminative vs generative models and problem-solving scenarios.",
+            "duration_minutes": 30
+          },
+          {
+            "topic_id": "llm_architecture",
+            "activity_type": "learning",
+            "description": "Introduction to foundation models and how Large Language Models power modern generative applications.",
+            "duration_minutes": 30
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 3,
+        "title": "LLM Architecture Foundations",
+        "activities": [
+          {
+            "topic_id": "llm_architecture",
+            "activity_type": "learning",
+            "description": "Study Transformer architecture fundamentals, self-attention mechanisms, and the training lifecycle.",
+            "duration_minutes": 50
+          },
+          {
+            "topic_id": "llm_architecture",
+            "activity_type": "practice",
+            "description": "Practice quizzes on transformer components and the differences between pre-training and fine-tuning.",
+            "duration_minutes": 40
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 4,
+        "title": "Prompt Engineering and Model Customization",
+        "activities": [
+          {
+            "topic_id": "llm_architecture",
+            "activity_type": "learning",
+            "description": "Learn prompt engineering concepts, zero-shot/few-shot learning, and parameter-efficient fine-tuning approaches.",
+            "duration_minutes": 45
+          },
+          {
+            "topic_id": "llm_architecture",
+            "activity_type": "practice",
+            "description": "Prompt design exercises and scenario questions on choosing between prompt engineering, fine-tuning, and RAG.",
+            "duration_minutes": 45
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 5,
+        "title": "Mid-Plan Synthesis & Weak Topic Check",
+        "activities": [
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "review",
+            "description": "Mid-point cumulative review of GenAI foundational concepts and common misconceptions.",
+            "duration_minutes": 30
+          },
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "practice",
+            "description": "Exam-style practice set focusing on GenAI concept definitions and boundary cases.",
+            "duration_minutes": 30
+          },
+          {
+            "topic_id": "llm_architecture",
+            "activity_type": "review",
+            "description": "Review of LLM architectures, fine-tuning tradeoffs, and prompt strategies.",
+            "duration_minutes": 30
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 6,
+        "title": "Google Responsible AI Principles",
+        "activities": [
+          {
+            "topic_id": "responsible_ai",
+            "activity_type": "learning",
+            "description": "Study Google Responsible AI principles, ethical challenges, and recognizing algorithmic bias in generative models.",
+            "duration_minutes": 50
+          },
+          {
+            "topic_id": "responsible_ai",
+            "activity_type": "practice",
+            "description": "Evaluate case studies identifying potential harms, biases, and ethical issues in GenAI deployments.",
+            "duration_minutes": 40
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 7,
+        "title": "Responsible AI Governance and Safety Controls",
+        "activities": [
+          {
+            "topic_id": "responsible_ai",
+            "activity_type": "learning",
+            "description": "Learn implementation of safety filters, content moderation, watermarking, and model governance policies.",
+            "duration_minutes": 45
+          },
+          {
+            "topic_id": "responsible_ai",
+            "activity_type": "practice",
+            "description": "Practice configuring safety threshold parameters and auditing GenAI systems for compliance.",
+            "duration_minutes": 45
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 8,
+        "title": "Vertex AI Studio Exploration & Parameters",
+        "activities": [
+          {
+            "topic_id": "vertex_ai_studio",
+            "activity_type": "learning",
+            "description": "Explore Vertex AI Studio features, prompt design interface, and foundational model catalogs.",
+            "duration_minutes": 50
+          },
+          {
+            "topic_id": "vertex_ai_studio",
+            "activity_type": "practice",
+            "description": "Hands-on practice designing prompts and adjusting inference parameters such as temperature, top-k, and top-p.",
+            "duration_minutes": 40
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 9,
+        "title": "Vertex AI Studio Evaluation & Tuning",
+        "activities": [
+          {
+            "topic_id": "vertex_ai_studio",
+            "activity_type": "learning",
+            "description": "Learn model output evaluation metrics, comparing foundational models, and operationalizing prompts in Vertex AI.",
+            "duration_minutes": 45
+          },
+          {
+            "topic_id": "vertex_ai_studio",
+            "activity_type": "practice",
+            "description": "Scenario practice selecting models and tuning parameters for specific business use cases in Vertex AI Studio.",
+            "duration_minutes": 45
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 10,
+        "title": "Comprehensive Review & Weak Topic Mastery",
+        "activities": [
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "review",
+            "description": "Targeted review of difficult GenAI concepts, terminology, and foundational exam patterns.",
+            "duration_minutes": 30
+          },
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "practice",
+            "description": "Timed quiz addressing GenAI concept scenarios and business value drivers.",
+            "duration_minutes": 30
+          },
+          {
+            "topic_id": "responsible_ai",
+            "activity_type": "review",
+            "description": "Review Responsible AI principles, safety filters, and governance checklists.",
+            "duration_minutes": 30
+          }
+        ],
+        "total_minutes": 90
+      },
+      {
+        "day_number": 11,
+        "title": "Final Exam Readiness & Mock Review",
+        "activities": [
+          {
+            "topic_id": "vertex_ai_studio",
+            "activity_type": "review",
+            "description": "Final review of Vertex AI Studio tool capabilities, prompt testing, and parameter selection.",
+            "duration_minutes": 30
+          },
+          {
+            "topic_id": "genai_concepts",
+            "activity_type": "practice",
+            "description": "Full mixed-topic mock assessment with concentrated coverage on GenAI concepts.",
+            "duration_minutes": 30
+          },
+          {
+            "topic_id": "llm_architecture",
+            "activity_type": "review",
+            "description": "Final summary review of LLM architecture and model customization strategies.",
+            "duration_minutes": 30
+          }
+        ],
+        "total_minutes": 90
+      }
+    ],
+    "total_planned_minutes": 990,
+    "planning_notes": "The schedule was adapted to replan the remaining 11 days of the original 14-day study journey following the completion of the first 3 days. Diagnostic tracking identified 'genai_concepts' as a critical weak area for this beginner-level student, with no topics marked as strong. To address this, the plan prioritizes 'genai_concepts' immediately on Days 1 and 2 with dedicated learning and practice, followed by spaced review and reinforcement sessions on Days 5, 10, and 11. The other core domains (llm_architecture, responsible_ai, and vertex_ai_studio) are sequentially introduced with structured learning, practical exercises, and review to ensure comprehensive exam readiness while strictly respecting the 90-minute daily ceiling."
+  },
+  "study_plan_history": [
+    {
+      "certification_name": "Google Cloud Generative AI Leader",
+      "days_until_exam": 14,
+      "daily_study_minutes": 90,
+      "days": [
+        {
+          "day_number": 1,
+          "title": "Introduction to Generative AI Concepts",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "learning",
+              "description": "Study the fundamentals of Generative AI, defining generative models, and contrasting them with traditional machine learning and classical AI.",
+              "duration_minutes": 60
+            },
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "practice",
+              "description": "Complete introductory exercises distinguishing between classification/regression tasks and generative generation tasks.",
+              "duration_minutes": 30
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 2,
+          "title": "Generative AI Business Use Cases",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "learning",
+              "description": "Explore real-world generative AI enterprise use cases, multi-modal applications, and industry adoption patterns.",
+              "duration_minutes": 50
+            },
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "practice",
+              "description": "Analyze case study scenarios to match business problems with appropriate generative AI solutions.",
+              "duration_minutes": 40
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 3,
+          "title": "LLM Fundamentals",
+          "activities": [
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "learning",
+              "description": "Understand Large Language Model (LLM) core fundamentals, vocabulary, tokens, and general capabilities.",
+              "duration_minutes": 60
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "practice",
+              "description": "Review concept flashcards and practice question sets on basic LLM terminology and capabilities.",
+              "duration_minutes": 30
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 4,
+          "title": "Transformer Architecture and Training Methods",
+          "activities": [
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "learning",
+              "description": "Deep dive into the Transformer architecture (self-attention mechanism), model pre-training, and fine-tuning techniques.",
+              "duration_minutes": 60
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "practice",
+              "description": "Differentiate when to apply pre-training, parameter-efficient fine-tuning (PEFT), and prompt tuning through sample scenarios.",
+              "duration_minutes": 30
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 5,
+          "title": "Prompt Engineering Strategies",
+          "activities": [
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "learning",
+              "description": "Learn core prompt engineering patterns, including zero-shot, few-shot prompting, chain-of-thought, and system instructions.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "practice",
+              "description": "Draft, test, and refine prompts using various prompting strategies for consistency and accuracy.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 6,
+          "title": "Weekly Milestone Review: GenAI & LLM Foundations",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "review",
+              "description": "Comprehensive review of core GenAI definitions, distinctions, and use case categorizations.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "review",
+              "description": "Review key architectural concepts, training vs fine-tuning trade-offs, and prompt engineering principles.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 7,
+          "title": "Getting Started with Vertex AI Studio",
+          "activities": [
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "learning",
+              "description": "Explore the Vertex AI Studio interface, model garden, and generative model offerings in Google Cloud.",
+              "duration_minutes": 55
+            },
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "practice",
+              "description": "Navigate Vertex AI Studio and practice creating simple prompt templates across modalities.",
+              "duration_minutes": 35
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 8,
+          "title": "Parameter Tuning in Vertex AI Studio",
+          "activities": [
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "learning",
+              "description": "Learn model configuration parameters: temperature, top-k, top-p, token limits, and stop sequences.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "practice",
+              "description": "Experiment with temperature and top-k/top-p parameter adjustments to observe output variance and determinism.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 9,
+          "title": "Google's Responsible AI Principles",
+          "activities": [
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "learning",
+              "description": "Study Google's 7 Responsible AI Principles, accountability frameworks, and ethical guidelines.",
+              "duration_minutes": 55
+            },
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "practice",
+              "description": "Examine ethical case studies and map scenarios against Google's Responsible AI guidelines.",
+              "duration_minutes": 35
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 10,
+          "title": "Bias, Safety Filters, and Moderation",
+          "activities": [
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "learning",
+              "description": "Understand AI bias mitigation, safety filter thresholds, content moderation, and toxicity detection.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "practice",
+              "description": "Configure safety filters and moderation settings to prevent harmful outputs and evaluate responses.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 11,
+          "title": "Applied Tooling and Governance Practice",
+          "activities": [
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "practice",
+              "description": "Test end-to-end prompt engineering in Vertex AI Studio while enforcing specific safety filter categories.",
+              "duration_minutes": 50
+            },
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "practice",
+              "description": "Evaluate potential safety violations and adjust system guardrails to align with governance policies.",
+              "duration_minutes": 40
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 12,
+          "title": "Deep Review: Architecture and Vertex AI Studio",
+          "activities": [
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "review",
+              "description": "Review transformer mechanics, fine-tuning methodologies, and prompting best practices.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "review",
+              "description": "Review Vertex AI Studio features, parameter configurations, and evaluation workflows.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 13,
+          "title": "Deep Review: Concepts and Responsible AI",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "review",
+              "description": "Revisit Generative AI core concepts, business problem framing, and implementation trade-offs.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "review",
+              "description": "Revisit Responsible AI principles, risk mitigation, and compliance considerations.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 14,
+          "title": "Final Comprehensive Mock Exam and Review",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "review",
+              "description": "Conduct a full-scope simulated practice assessment covering all curriculum objectives.",
+              "duration_minutes": 50
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "practice",
+              "description": "Review incorrect responses, analyze rationales, and finalize exam day strategy.",
+              "duration_minutes": 40
+            }
+          ],
+          "total_minutes": 90
+        }
+      ],
+      "total_planned_minutes": 1260,
+      "planning_notes": "This 14-day study plan is tailored for a beginner studying 90 minutes per day (total 1,260 minutes). It follows a progressive learning path: beginning with core foundational concepts and LLM architectures, transitioning to hands-on Vertex AI Studio workflows and Responsible AI governance, and concluding with cumulative reviews and exam-style practice."
+    },
+    {
+      "certification_name": "Google Cloud Generative AI Leader",
+      "days_until_exam": 11,
+      "daily_study_minutes": 90,
+      "days": [
+        {
+          "day_number": 1,
+          "title": "Weak Topic Focus: Generative AI Concepts Deep Dive",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "learning",
+              "description": "Deep dive into Generative AI core definitions, taxonomy, and how GenAI differs from traditional AI and machine learning.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "practice",
+              "description": "Scenario-based practice exercises classifying AI workloads and identifying suitable Generative AI use cases.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 2,
+          "title": "GenAI Concepts Reinforcement & Introduction to LLMs",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "review",
+              "description": "Spaced review and flashcards covering GenAI concepts, capabilities, and common business applications.",
+              "duration_minutes": 30
+            },
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "practice",
+              "description": "Targeted practice questions distinguishing discriminative vs generative models and problem-solving scenarios.",
+              "duration_minutes": 30
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "learning",
+              "description": "Introduction to foundation models and how Large Language Models power modern generative applications.",
+              "duration_minutes": 30
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 3,
+          "title": "LLM Architecture Foundations",
+          "activities": [
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "learning",
+              "description": "Study Transformer architecture fundamentals, self-attention mechanisms, and the training lifecycle.",
+              "duration_minutes": 50
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "practice",
+              "description": "Practice quizzes on transformer components and the differences between pre-training and fine-tuning.",
+              "duration_minutes": 40
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 4,
+          "title": "Prompt Engineering and Model Customization",
+          "activities": [
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "learning",
+              "description": "Learn prompt engineering concepts, zero-shot/few-shot learning, and parameter-efficient fine-tuning approaches.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "practice",
+              "description": "Prompt design exercises and scenario questions on choosing between prompt engineering, fine-tuning, and RAG.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 5,
+          "title": "Mid-Plan Synthesis & Weak Topic Check",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "review",
+              "description": "Mid-point cumulative review of GenAI foundational concepts and common misconceptions.",
+              "duration_minutes": 30
+            },
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "practice",
+              "description": "Exam-style practice set focusing on GenAI concept definitions and boundary cases.",
+              "duration_minutes": 30
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "review",
+              "description": "Review of LLM architectures, fine-tuning tradeoffs, and prompt strategies.",
+              "duration_minutes": 30
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 6,
+          "title": "Google Responsible AI Principles",
+          "activities": [
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "learning",
+              "description": "Study Google Responsible AI principles, ethical challenges, and recognizing algorithmic bias in generative models.",
+              "duration_minutes": 50
+            },
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "practice",
+              "description": "Evaluate case studies identifying potential harms, biases, and ethical issues in GenAI deployments.",
+              "duration_minutes": 40
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 7,
+          "title": "Responsible AI Governance and Safety Controls",
+          "activities": [
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "learning",
+              "description": "Learn implementation of safety filters, content moderation, watermarking, and model governance policies.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "practice",
+              "description": "Practice configuring safety threshold parameters and auditing GenAI systems for compliance.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 8,
+          "title": "Vertex AI Studio Exploration & Parameters",
+          "activities": [
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "learning",
+              "description": "Explore Vertex AI Studio features, prompt design interface, and foundational model catalogs.",
+              "duration_minutes": 50
+            },
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "practice",
+              "description": "Hands-on practice designing prompts and adjusting inference parameters such as temperature, top-k, and top-p.",
+              "duration_minutes": 40
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 9,
+          "title": "Vertex AI Studio Evaluation & Tuning",
+          "activities": [
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "learning",
+              "description": "Learn model output evaluation metrics, comparing foundational models, and operationalizing prompts in Vertex AI.",
+              "duration_minutes": 45
+            },
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "practice",
+              "description": "Scenario practice selecting models and tuning parameters for specific business use cases in Vertex AI Studio.",
+              "duration_minutes": 45
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 10,
+          "title": "Comprehensive Review & Weak Topic Mastery",
+          "activities": [
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "review",
+              "description": "Targeted review of difficult GenAI concepts, terminology, and foundational exam patterns.",
+              "duration_minutes": 30
+            },
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "practice",
+              "description": "Timed quiz addressing GenAI concept scenarios and business value drivers.",
+              "duration_minutes": 30
+            },
+            {
+              "topic_id": "responsible_ai",
+              "activity_type": "review",
+              "description": "Review Responsible AI principles, safety filters, and governance checklists.",
+              "duration_minutes": 30
+            }
+          ],
+          "total_minutes": 90
+        },
+        {
+          "day_number": 11,
+          "title": "Final Exam Readiness & Mock Review",
+          "activities": [
+            {
+              "topic_id": "vertex_ai_studio",
+              "activity_type": "review",
+              "description": "Final review of Vertex AI Studio tool capabilities, prompt testing, and parameter selection.",
+              "duration_minutes": 30
+            },
+            {
+              "topic_id": "genai_concepts",
+              "activity_type": "practice",
+              "description": "Full mixed-topic mock assessment with concentrated coverage on GenAI concepts.",
+              "duration_minutes": 30
+            },
+            {
+              "topic_id": "llm_architecture",
+              "activity_type": "review",
+              "description": "Final summary review of LLM architecture and model customization strategies.",
+              "duration_minutes": 30
+            }
+          ],
+          "total_minutes": 90
+        }
+      ],
+      "total_planned_minutes": 990,
+      "planning_notes": "The schedule was adapted to replan the remaining 11 days of the original 14-day study journey following the completion of the first 3 days. Diagnostic tracking identified 'genai_concepts' as a critical weak area for this beginner-level student, with no topics marked as strong. To address this, the plan prioritizes 'genai_concepts' immediately on Days 1 and 2 with dedicated learning and practice, followed by spaced review and reinforcement sessions on Days 5, 10, and 11. The other core domains (llm_architecture, responsible_ai, and vertex_ai_studio) are sequentially introduced with structured learning, practical exercises, and review to ensure comprehensive exam readiness while strictly respecting the 90-minute daily ceiling."
+    }
+  ],
+  "current_quiz_id": "quiz_1",
+  "stored_quizzes": {
+    "quiz_1": {
+      "certification_name": "Google Cloud Generative AI Leader",
+      "topic_ids": [
+        "genai_concepts"
+      ],
+      "experience_level": "beginner",
+      "questions": [
+        {
+          "question_id": "q1",
+          "topic_id": "genai_concepts",
+          "question_text": "What is the primary defining characteristic of Generative AI compared to traditional artificial intelligence systems?",
+          "options": {
+            "D": "It strictly operates by executing predefined, hard-coded if-then logic rules created by human programmers.",
+            "A": "It creates new and original content, such as text, images, or audio, by learning patterns from existing data.",
+            "B": "It replaces rule-based relational databases with deterministic search algorithms.",
+            "C": "It focuses exclusively on sorting and labeling structured tabular numerical data without pattern recognition."
+          },
+          "correct_answer": "A",
+          "explanation": "Generative AI is a subset of artificial intelligence that uses deep learning models to produce novel content\u2014such as text, images, audio, synthetic data, and code\u2014by identifying and replicating patterns learned from training data. Traditional AI and predictive models typically analyze, categorize, or make predictions on existing data rather than generating brand-new artifacts.",
+          "difficulty": "beginner"
+        },
+        {
+          "question_id": "q2",
+          "topic_id": "genai_concepts",
+          "question_text": "Which of the following correctly describes the hierarchical relationship between Artificial Intelligence (AI), Machine Learning (ML), Deep Learning (DL), and Generative AI (GenAI)?",
+          "options": {
+            "C": "Artificial Intelligence is the broad umbrella, Machine Learning is a subset of AI, Deep Learning is a subset of ML, and Generative AI is a subset of Deep Learning.",
+            "D": "Deep Learning and Generative AI are completely unrelated fields outside the scope of Artificial Intelligence and Machine Learning.",
+            "B": "Generative AI is the broadest umbrella term, with Artificial Intelligence, Machine Learning, and Deep Learning nested inside it.",
+            "A": "Machine Learning encompasses Artificial Intelligence, which contains Generative AI, which contains Deep Learning."
+          },
+          "correct_answer": "C",
+          "explanation": "Artificial Intelligence (AI) is the broad umbrella discipline for building intelligent systems. Machine Learning (ML) is a subset of AI focused on learning from data. Deep Learning (DL) is a specialized subset of ML that uses multi-layered neural networks. Generative AI (GenAI) is built on deep learning architectures to generate new content.",
+          "difficulty": "beginner"
+        },
+        {
+          "question_id": "q3",
+          "topic_id": "genai_concepts",
+          "question_text": "How does a generative model differ fundamentally from a discriminative model in machine learning?",
+          "options": {
+            "C": "A generative model only works with structured numerical tables, whereas a discriminative model only processes unstructured text.",
+            "A": "A generative model evaluates pre-existing labels on data, whereas a discriminative model generates synthetic media from scratch.",
+            "B": "A generative model learns the underlying distribution to produce new data instances, whereas a discriminative model learns decision boundaries to classify or predict labels for given data.",
+            "D": "A generative model requires deterministic rules without training data, whereas a discriminative model requires neural networks."
+          },
+          "correct_answer": "B",
+          "explanation": "Discriminative models learn decision boundaries between classes to categorize inputs or predict labels (e.g., classifying whether an email is spam). Generative models learn the underlying probability distribution of the data to create new, realistic samples that resemble the training data.",
+          "difficulty": "beginner"
+        },
+        {
+          "question_id": "q4",
+          "topic_id": "genai_concepts",
+          "question_text": "A business leader wants to identify an appropriate use case for Generative AI within customer support operations. Which of the following tasks is the best fit for Generative AI?",
+          "options": {
+            "C": "Drafting contextual, natural-sounding email responses and summarizing lengthy customer inquiry threads.",
+            "A": "Calculating the exact monthly billing total for a customer based on fixed subscription rates.",
+            "B": "Storing encrypted customer credit card information securely in a relational database.",
+            "D": "Routing a network packet to the nearest physical data center using static routing tables."
+          },
+          "correct_answer": "C",
+          "explanation": "Drafting contextual conversational responses and synthesizing long unstructured documents (summarization) are primary use cases for Generative AI models like Large Language Models (LLMs). Exact arithmetic, secure database storage, and network packet routing rely on deterministic, rule-based systems where generative models are not suitable.",
+          "difficulty": "beginner"
+        },
+        {
+          "question_id": "q5",
+          "topic_id": "genai_concepts",
+          "question_text": "An organization is evaluating potential AI initiatives. Which scenario represents a standard use case for Generative AI rather than traditional predictive machine learning?",
+          "options": {
+            "C": "Forecasting next quarter's inventory demand using historical time-series sales figures.",
+            "A": "Predicting whether a bank transaction is fraudulent based on historical numerical transaction features.",
+            "B": "Generating synthetic photo-realistic product images and marketing ad copy for an upcoming product launch.",
+            "D": "Classifying incoming support tickets into predetermined priority categories like 'Low', 'Medium', or 'High'."
+          },
+          "correct_answer": "B",
+          "explanation": "Synthesizing photo-realistic images and authoring marketing copy are quintessential generative tasks that create novel content. In contrast, predicting fraudulent transactions (binary classification), forecasting sales (regression/time-series), and categorizing tickets into predetermined priorities (classification) are standard predictive machine learning tasks.",
+          "difficulty": "beginner"
+        }
+      ]
+    }
+  },
+  "quiz_results": [
+    {
+      "total_questions": 5,
+      "correct_answers": 3,
+      "score_percentage": 60.0,
+      "question_feedback": [
+        {
+          "question_id": "q1",
+          "topic_id": "genai_concepts",
+          "student_answer": "A",
+          "correct_answer": "A",
+          "is_correct": true,
+          "explanation": "Generative AI is a subset of artificial intelligence that uses deep learning models to produce novel content\u2014such as text, images, audio, synthetic data, and code\u2014by identifying and replicating patterns learned from training data. Traditional AI and predictive models typically analyze, categorize, or make predictions on existing data rather than generating brand-new artifacts."
+        },
+        {
+          "question_id": "q2",
+          "topic_id": "genai_concepts",
+          "student_answer": "C",
+          "correct_answer": "C",
+          "is_correct": true,
+          "explanation": "Artificial Intelligence (AI) is the broad umbrella discipline for building intelligent systems. Machine Learning (ML) is a subset of AI focused on learning from data. Deep Learning (DL) is a specialized subset of ML that uses multi-layered neural networks. Generative AI (GenAI) is built on deep learning architectures to generate new content."
+        },
+        {
+          "question_id": "q3",
+          "topic_id": "genai_concepts",
+          "student_answer": "B",
+          "correct_answer": "B",
+          "is_correct": true,
+          "explanation": "Discriminative models learn decision boundaries between classes to categorize inputs or predict labels (e.g., classifying whether an email is spam). Generative models learn the underlying probability distribution of the data to create new, realistic samples that resemble the training data."
+        },
+        {
+          "question_id": "q4",
+          "topic_id": "genai_concepts",
+          "student_answer": "A",
+          "correct_answer": "C",
+          "is_correct": false,
+          "explanation": "Drafting contextual conversational responses and synthesizing long unstructured documents (summarization) are primary use cases for Generative AI models like Large Language Models (LLMs). Exact arithmetic, secure database storage, and network packet routing rely on deterministic, rule-based systems where generative models are not suitable."
+        },
+        {
+          "question_id": "q5",
+          "topic_id": "genai_concepts",
+          "student_answer": "A",
+          "correct_answer": "B",
+          "is_correct": false,
+          "explanation": "Synthesizing photo-realistic images and authoring marketing copy are quintessential generative tasks that create novel content. In contrast, predicting fraudulent transactions (binary classification), forecasting sales (regression/time-series), and categorizing tickets into predetermined priorities (classification) are standard predictive machine learning tasks."
+        }
+      ],
+      "weak_topics": [
+        "genai_concepts"
+      ],
+      "strong_topics": []
+    }
+  ],
+  "weak_topics": [
+    "genai_concepts"
+  ],
+  "strong_topics": [],
+  "completed_topics": [],
+  "plan_revision": 2,
+  "learning_progress": {
+    "total_quizzes_taken": 1,
+    "total_questions_attempted": 5,
+    "total_questions_correct": 3,
+    "overall_score_percentage": 60.0,
+    "topics_covered": [
+      "genai_concepts"
+    ]
+  }
+}

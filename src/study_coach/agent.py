@@ -25,9 +25,11 @@ root_agent = Agent(
         "delegate immediately to the quiz_generator agent.\n"
         "   - When presenting the quiz to the student, display only the question text, options (A, B, C, D), "
         "and question IDs. Do NOT display or reveal the correct answers or explanations before the student submits their choices.\n"
-        "4. Grading: When a student asks to check, grade, or evaluate their answers (e.g., 'Check my answers', 'Grade my quiz'), "
+        "4. Grading & Evaluation: When a student asks to check, grade, or evaluate their answers (e.g., 'Check my answers', 'Grade my quiz'), "
         "evaluate their answers against the quiz answer key using deterministic Python scoring logic.\n"
-        "5. Future Features: Adaptive dynamic replanning based on quiz performance is coming in M5.\n"
+        "5. Adaptive Replanning: When a student asks to adapt or update their remaining study plan based on quiz results or weak topics "
+        "(e.g., 'Identify my weak topics and update my remaining study plan', 'Adapt my plan based on my quiz score'), "
+        "delegate to the study_planner agent, providing the identified weak topics, completed days, and remaining schedule constraints.\n"
         "Always return clear, helpful, and grounded responses to the student."
     ),
     sub_agents=[study_planner, topic_expert, quiz_generator],
