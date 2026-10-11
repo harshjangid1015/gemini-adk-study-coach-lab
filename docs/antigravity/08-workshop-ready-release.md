@@ -782,6 +782,9 @@ quiz features during this milestone.
 - `docs/workshop/architecture-walkthrough.md`
 - `docs/workshop.md` (updated with hub links)
 - `docs/roadmap.md` (Future feature roadmap: Multi-Certification & Document RAG)
-- `docs/architecture.md` (comprehensive architecture & telemetry flow diagrams)
-- `README.md` (complete workshop-ready polish with all 20 required sections)
-- `docs/antigravity/README.md` (updated milestone index)
+- `docs/reports/recent_evaluation_report.json` (live evaluation report with 100% pass rate)
+
+### 5. Git Commit, Tag & GitHub Release
+- **Commit**: `07121188555d97efe3e440cc34096e34c81ed67a` (`docs(m8): prepare workshop-ready Study Coach release`)
+- **Git Tag**: `v1.0.0`
+- **Published GitHub Release URL**: `https://github.com/hastimal/gemini-adk-study-coach-lab/releases/tag/v1.0.0`
