@@ -1,0 +1,52 @@
+{
+  "total_questions": 5,
+  "correct_answers": 4,
+  "score_percentage": 80.0,
+  "question_feedback": [
+    {
+      "question_id": "q1",
+      "topic_id": "genai_concepts",
+      "student_answer": "A",
+      "correct_answer": "A",
+      "is_correct": true,
+      "explanation": "Generative models learn data probability distributions to synthesize new data artifacts (text, image, code), while discriminative models calculate decision boundaries to classify or score existing inputs."
+    },
+    {
+      "question_id": "q2",
+      "topic_id": "genai_concepts",
+      "student_answer": "B",
+      "correct_answer": "B",
+      "is_correct": true,
+      "explanation": "Grounding with Vertex AI Search retrieves relevant documents from enterprise datastores and provides them as contextual anchors to minimize hallucinations."
+    },
+    {
+      "question_id": "q3",
+      "topic_id": "llm_architecture",
+      "student_answer": "B",
+      "correct_answer": "B",
+      "is_correct": true,
+      "explanation": "The self-attention mechanism within Transformer architectures computes attention weights between all token pairs simultaneously, overcoming sequential bottlenecking."
+    },
+    {
+      "question_id": "q4",
+      "topic_id": "llm_architecture",
+      "student_answer": "C",
+      "correct_answer": "A",
+      "is_correct": false,
+      "explanation": "PEFT techniques like LoRA freeze base weights and update low-rank matrices, requiring orders of magnitude less memory and GPU compute."
+    },
+    {
+      "question_id": "q5",
+      "topic_id": "llm_architecture",
+      "student_answer": "B",
+      "correct_answer": "B",
+      "is_correct": true,
+      "explanation": "Few-shot prompting conditions the model on a handful of exemplary demonstration pairs directly inside the context window before asking for the target output."
+    }
+  ],
+  "weak_topics": [],
+  "strong_topics": [
+    "genai_concepts",
+    "llm_architecture"
+  ]
+}

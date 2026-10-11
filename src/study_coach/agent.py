@@ -1,5 +1,6 @@
 from google.adk import Agent
 
+from study_coach.agents.quiz_generator import quiz_generator
 from study_coach.agents.study_planner import study_planner
 from study_coach.agents.topic_expert import topic_expert
 from study_coach.config import GEMINI_MODEL
@@ -19,12 +20,17 @@ root_agent = Agent(
         "   - If they refer to a specific day in their study plan (e.g. 'Explain Day 4 of my plan'), check the conversation history "
         "or session state for the topic of that day. If the study plan is not present in session context, ask the student for the "
         "topic name or day details rather than pretending to remember.\n"
-        "3. Future Features: Scored certification quizzes (M4) and adaptive progress replanning (M5) "
-        "are not yet implemented. If asked about quizzes or testing their knowledge with scored tests, "
-        "politely inform the student that scored quiz generation is coming in a future update.\n"
+        "3. Practice Quizzes: When a student asks for practice questions, quiz questions, or knowledge tests "
+        "(e.g., 'Generate five practice questions about grounding', 'Create a quiz on LLMs'), "
+        "delegate immediately to the quiz_generator agent.\n"
+        "   - When presenting the quiz to the student, display only the question text, options (A, B, C, D), "
+        "and question IDs. Do NOT display or reveal the correct answers or explanations before the student submits their choices.\n"
+        "4. Grading: When a student asks to check, grade, or evaluate their answers (e.g., 'Check my answers', 'Grade my quiz'), "
+        "evaluate their answers against the quiz answer key using deterministic Python scoring logic.\n"
+        "5. Future Features: Adaptive dynamic replanning based on quiz performance is coming in M5.\n"
         "Always return clear, helpful, and grounded responses to the student."
     ),
-    sub_agents=[study_planner, topic_expert],
+    sub_agents=[study_planner, topic_expert, quiz_generator],
 )
 
 study_coach = root_agent

@@ -1,0 +1,80 @@
+{
+  "certification_name": "Google Cloud Generative AI Leader",
+  "topic_ids": [
+    "genai_concepts",
+    "llm_architecture"
+  ],
+  "experience_level": "beginner",
+  "questions": [
+    {
+      "question_id": "q1",
+      "topic_id": "genai_concepts",
+      "question_text": "What is the primary operational distinction between Generative AI models and traditional discriminative Machine Learning models?",
+      "options": {
+        "A": "Generative AI produces new original content, whereas discriminative models classify data or predict numerical labels.",
+        "B": "Generative AI models can only operate on numerical spreadsheets, whereas discriminative models generate essays.",
+        "C": "Discriminative models require no labeled data during pre-training, unlike generative models.",
+        "D": "Generative models guarantee factual truth by verifying every token against external web sources."
+      },
+      "correct_answer": "A",
+      "explanation": "Generative models learn data probability distributions to synthesize new data artifacts (text, image, code), while discriminative models calculate decision boundaries to classify or score existing inputs.",
+      "difficulty": "beginner"
+    },
+    {
+      "question_id": "q2",
+      "topic_id": "genai_concepts",
+      "question_text": "In Google Cloud, which enterprise practice is specifically used to ground a foundation model in verified corporate knowledge?",
+      "options": {
+        "A": "Increasing temperature parameter to 2.0 in Vertex AI Studio.",
+        "B": "Retrieval-Augmented Generation (RAG) using Vertex AI Search.",
+        "C": "Deleting prompt engineering guardrails before deployment.",
+        "D": "Running model fine-tuning with completely uncurated raw logs."
+      },
+      "correct_answer": "B",
+      "explanation": "Grounding with Vertex AI Search retrieves relevant documents from enterprise datastores and provides them as contextual anchors to minimize hallucinations.",
+      "difficulty": "beginner"
+    },
+    {
+      "question_id": "q3",
+      "topic_id": "llm_architecture",
+      "question_text": "Which foundational neural network architectural innovation enables Large Language Models to attend to tokens in parallel across long sequences?",
+      "options": {
+        "A": "Recurrent neural loops with backpropagation through time.",
+        "B": "Multi-head Self-Attention Mechanism.",
+        "C": "Rule-based expert decision trees.",
+        "D": "Static word co-occurrence n-gram lookup tables."
+      },
+      "correct_answer": "B",
+      "explanation": "The self-attention mechanism within Transformer architectures computes attention weights between all token pairs simultaneously, overcoming sequential bottlenecking.",
+      "difficulty": "beginner"
+    },
+    {
+      "question_id": "q4",
+      "topic_id": "llm_architecture",
+      "question_text": "What is the main advantage of Parameter-Efficient Fine-Tuning (PEFT/LoRA) over full-model fine-tuning?",
+      "options": {
+        "A": "It trains smaller adapter matrices while freezing base model weights, drastically reducing compute requirements.",
+        "B": "It replaces the transformer architecture with convolutional layers.",
+        "C": "It removes all safety filter evaluations during inference.",
+        "D": "It eliminates the need for evaluation test sets."
+      },
+      "correct_answer": "A",
+      "explanation": "PEFT techniques like LoRA freeze base weights and update low-rank matrices, requiring orders of magnitude less memory and GPU compute.",
+      "difficulty": "beginner"
+    },
+    {
+      "question_id": "q5",
+      "topic_id": "llm_architecture",
+      "question_text": "When designing prompts in Vertex AI Studio, which technique provides the model with a few demonstration input-output pairs?",
+      "options": {
+        "A": "Zero-shot prompting.",
+        "B": "Few-shot prompting.",
+        "C": "Unsupervised pre-training.",
+        "D": "Reinforcement learning from human feedback (RLHF)."
+      },
+      "correct_answer": "B",
+      "explanation": "Few-shot prompting conditions the model on a handful of exemplary demonstration pairs directly inside the context window before asking for the target output.",
+      "difficulty": "beginner"
+    }
+  ]
+}
