@@ -1,0 +1,177 @@
+resources:
+  - resource_id: "google_genai_leader_exam_guide"
+    topic_ids:
+      - "genai_concepts"
+      - "llm_architecture"
+      - "responsible_ai"
+      - "vertex_ai_studio"
+    title: "Official Google Cloud Generative AI Leader Certification Guide"
+    provider: "Google Cloud"
+    resource_type: "Official exam guide"
+    url: "https://cloud.google.com/learn/certification/generative-ai-leader"
+    short_description: "The official Google Cloud exam blueprint, domain breakdown, prerequisites, and preparation overview."
+    experience_level: "all"
+    estimated_minutes: 20
+    language: "English"
+    exam_domain: "Domain 1 & Domain 2: Generative AI Fundamentals and Solutions"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: true
+    tags: ["official", "exam-guide", "certification", "blueprint"]
+
+  - resource_id: "google_cloud_genai_docs"
+    topic_ids:
+      - "genai_concepts"
+      - "vertex_ai_studio"
+    title: "Google Cloud Generative AI Overview & Documentation"
+    provider: "Google Cloud"
+    resource_type: "Official documentation"
+    url: "https://cloud.google.com/vertex-ai/generative-ai/docs/overview"
+    short_description: "Official guide covering Gemini models, multimodal capabilities, Vertex AI Studio, and foundational concepts."
+    experience_level: "beginner"
+    estimated_minutes: 30
+    language: "English"
+    exam_domain: "Domain 1: Understand Generative AI Concepts and Fundamentals"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: true
+    tags: ["official", "vertex-ai", "gemini", "documentation"]
+
+  - resource_id: "google_ml_crash_course_llm"
+    topic_ids:
+      - "genai_concepts"
+      - "llm_architecture"
+    title: "Google Machine Learning Crash Course: Large Language Models"
+    provider: "Google Developers"
+    resource_type: "Interactive tutorial"
+    url: "https://developers.google.com/machine-learning/crash-course"
+    short_description: "Interactive visual modules explaining generative models, embeddings, transformers, and prompt engineering."
+    experience_level: "beginner"
+    estimated_minutes: 45
+    language: "English"
+    exam_domain: "Domain 1: Understand Generative AI Concepts and Fundamentals"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: true
+    tags: ["official", "tutorial", "crash-course", "interactive"]
+
+  - resource_id: "google_responsible_ai_principles"
+    topic_ids:
+      - "responsible_ai"
+    title: "Google's AI Principles and Responsible AI Governance"
+    provider: "Google"
+    resource_type: "Official documentation"
+    url: "https://ai.google/responsibility/principles/"
+    short_description: "Google's published 7 AI Principles covering fairness, safety, accountability, privacy, and social benefit."
+    experience_level: "all"
+    estimated_minutes: 25
+    language: "English"
+    exam_domain: "Domain 3: Governance, Security, and Responsible AI"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: true
+    tags: ["official", "responsible-ai", "ethics", "principles", "governance"]
+
+  - resource_id: "vertex_ai_studio_quickstart"
+    topic_ids:
+      - "vertex_ai_studio"
+    title: "Vertex AI Studio: Interactive Prompt Prototyping Guide"
+    provider: "Google Cloud"
+    resource_type: "Official documentation"
+    url: "https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/quickstart-multimodal"
+    short_description: "Walkthrough of Vertex AI Studio interface, tuning parameters (temperature, Top-P, Top-K), and testing multimodal prompts."
+    experience_level: "intermediate"
+    estimated_minutes: 30
+    language: "English"
+    exam_domain: "Domain 2: Explore and Prototype with Vertex AI Studio"
+    requires_login: true
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: true
+    tags: ["official", "vertex-ai-studio", "prompt-engineering", "hands-on"]
+
+  - resource_id: "google_cloud_rag_grounding_repo"
+    topic_ids:
+      - "genai_concepts"
+      - "vertex_ai_studio"
+    title: "Google Cloud Generative AI: RAG and Grounding Sample Repository"
+    provider: "Google Cloud Platform"
+    resource_type: "GitHub repository"
+    url: "https://github.com/GoogleCloudPlatform/generative-ai/tree/main/rag"
+    short_description: "Production examples and notebooks implementing grounding with Google Search and Vertex AI Search."
+    experience_level: "intermediate"
+    estimated_minutes: 40
+    language: "English"
+    exam_domain: "Domain 2: Business Solutions and Architecture with GenAI"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: true
+    tags: ["official", "github", "rag", "grounding", "sample-code"]
+
+  - resource_id: "huggingface_llm_course_intro"
+    topic_ids:
+      - "llm_architecture"
+    title: "Hugging Face LLM Course: Chapter 1 Foundations"
+    provider: "Hugging Face"
+    resource_type: "Article"
+    url: "https://huggingface.co/learn/nlp-course/chapter1/1"
+    short_description: "Explanatory guide covering natural language processing, transformers, pre-training, fine-tuning, and tokenizer fundamentals."
+    experience_level: "beginner"
+    estimated_minutes: 35
+    language: "English"
+    exam_domain: "Domain 1: Understand Generative AI Concepts and Fundamentals"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: false
+    tags: ["tutorial", "transformers", "nlp", "llm-course"]
+
+  - resource_id: "3b1b_transformer_video"
+    topic_ids:
+      - "llm_architecture"
+    title: "3Blue1Brown: Visualizing How Transformers Work"
+    provider: "3Blue1Brown"
+    resource_type: "Video"
+    url: "https://www.youtube.com/watch?v=wjZofJX0v4M"
+    short_description: "Superb animated mathematical intuition of transformer blocks, word embeddings, matrix projections, and token prediction."
+    experience_level: "beginner"
+    estimated_minutes: 27
+    language: "English"
+    exam_domain: "Domain 1: Understand Generative AI Concepts and Fundamentals"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: false
+    tags: ["video", "visual-math", "transformers", "deep-learning"]
+
+  - resource_id: "3b1b_attention_video"
+    topic_ids:
+      - "llm_architecture"
+    title: "3Blue1Brown: Visualizing the Self-Attention Mechanism"
+    provider: "3Blue1Brown"
+    resource_type: "Video"
+    url: "https://www.youtube.com/watch?v=eMlx5fFNoYc"
+    short_description: "Step-by-step visual demonstration of Queries, Keys, and Values, Softmax weighting, and contextual embeddings."
+    experience_level: "intermediate"
+    estimated_minutes: 22
+    language: "English"
+    exam_domain: "Domain 1: Understand Generative AI Concepts and Fundamentals"
+    requires_login: false
+    requires_paid_access: false
+    verified_at: "2026-10"
+    verification_status: "verified"
+    is_official: false
+    tags: ["video", "attention", "self-attention", "matrix-math"]

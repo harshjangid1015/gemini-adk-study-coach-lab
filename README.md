@@ -61,8 +61,10 @@ To run all tests and quality checks, use:
   - **Adaptive Learning Orchestration Workflow (`AdaptiveStudyWorkflow`)**: Coordinates plan creation, topic learning, practice quiz generation, sanitized question presentation, deterministic scoring, and weak-topic prioritized replanning.
   - **Student Session State (`LearningSessionService`)**: In-memory session tracking powered by Google ADK `InMemorySessionService`.
   - **Student Workshop UI (`ui/app.py`)**: Multi-tab Streamlit web application providing study planning, topic learning, sanitized quizzing, grading, and adaptive replanning.
+  - **Interactive Learning Experience & Visuals**: Mermaid architecture diagrams (with text alternatives), 9 verified free external learning resources, runnable beginner Python examples (tokenization, self-attention, RAG simulation), practice jump links, and LinkedIn learning share generators.
   - **Docker & Docker Compose Runtime**: Hardened, reproducible containerization using pinned Python 3.12 slim, locked dependencies via `uv.lock`, healthchecks, and non-root execution.
-  - Pydantic models for student profiles, study requests, study plans, topic explanations, quizzes/evaluations, and learning sessions.
-  - Deterministic curriculum, planning, and grading tools reading `google_cloud_genai_leader.yaml`.
+  - Pydantic models for student profiles, study requests, study plans, topic explanations, quizzes/evaluations, learning resources, and learning sessions.
+  - Deterministic curriculum, planning, resource matching, and grading tools reading `google_cloud_genai_leader.yaml` and `learning_resources.yaml`.
 - **Planned**: Observability, Prometheus metrics, OpenTelemetry, and workshop-ready release package.
+
 

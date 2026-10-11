@@ -98,21 +98,29 @@ flowchart LR
 2. **Tab 1: Study Plan**:
    - Click **Generate Initial Plan**.
    - Review day-by-day roadmap and verify daily minutes never exceed 90.
+   - Select specific days (e.g., Day 4) to view **Curated Learning Resources** with verified links, badges, and separate duration estimates that preserve the core study budget.
 
 3. **Tab 2: Learn Topic**:
    - Choose curriculum topic (e.g., `genai_concepts` or `llm_architecture`).
-   - Click **Teach This Topic** to receive an in-depth, grounded explanation with architecture examples.
+   - Click **Teach This Topic** to load 6 structured sub-tabs:
+     - *🎯 Summary & Objectives*: Key concepts and objectives.
+     - *📊 Architecture Diagram*: Interactive Mermaid architecture diagram with component breakdowns and accessible text alternatives.
+     - *📘 Step-by-Step Lesson*: Detailed explanations and Google Cloud architectural examples.
+     - *💻 Hands-On Python*: Self-contained, runnable Python code examples with expected outputs.
+     - *🌐 Verified Resources*: Direct links to official Google documentation and free tutorials.
+     - *🚀 Practice & Share*: Comprehension checks, one-click quiz jump, and LinkedIn share generator.
 
 4. **Tab 3: Practice Quiz**:
-   - Choose topic and generate 5 multiple choice questions.
-   - *Security Note*: Correct answers are hidden on the server.
+   - Choose topic (or use preselected topic from Learn tab) and generate 5 multiple choice questions.
+   - *Security Note*: Correct answers are hidden on the server until submission.
    - Choose options and click **Submit Answers for Deterministic Grading**.
    - Review exact score percentage and diagnostic weak topics ($< 70\%$).
 
 5. **Tab 4: Adaptive Plan**:
-   - Notice weak topics flagged from the quiz.
+   - Notice weak topics flagged from the quiz with **Recommended Remediation Pathways** (diagrams, code demos, official documentation).
    - Specify completed days (e.g. 3 days completed, 11 remaining).
    - Click **Generate Adapted Plan** to produce Revision 2, prioritizing remediation of weak topics within the remaining budget.
+
 
 ---
 

@@ -176,3 +176,42 @@ class WorkshopFacade:
             user_id=user_id,
             completed_days=completed_days,
         )
+
+    def get_topic_resources(
+        self,
+        topic_id: str,
+        experience_level: str | None = None,
+    ) -> list[Any]:
+        """Returns verified learning resources for a given topic."""
+        from study_coach.tools.resource_tools import get_resources_for_topic
+
+        return get_resources_for_topic(
+            topic_id=topic_id, experience_level=experience_level
+        )
+
+    def get_day_resources(
+        self,
+        topic_ids: list[str],
+        max_minutes: int | None = None,
+        experience_level: str | None = None,
+    ) -> list[Any]:
+        """Returns verified resources fitting a study day's time budget."""
+        from study_coach.tools.resource_tools import get_resources_for_day
+
+        return get_resources_for_day(
+            topic_ids=topic_ids,
+            max_minutes=max_minutes,
+            experience_level=experience_level,
+        )
+
+    def get_topic_diagram(self, topic_id: str) -> Any | None:
+        """Returns declarative lesson diagram for a given topic."""
+        from study_coach.services.lesson_visuals import get_diagram_for_topic
+
+        return get_diagram_for_topic(topic_id)
+
+    def get_topic_code_examples(self, topic_id: str) -> list[Any]:
+        """Returns curated code examples for a given topic."""
+        from study_coach.data.code_examples_registry import get_examples_for_topic
+
+        return get_examples_for_topic(topic_id)

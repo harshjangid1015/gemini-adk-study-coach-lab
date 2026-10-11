@@ -633,7 +633,54 @@ Milestone 6 adds an attendee-ready web UI layer and container runtime over the c
 ---
 
 ## 5. Git Release Information
-- **Commit Hash**: `[pending staging/commit]`
-- **Target Tag**: `v0.6.0`
+- **Commit Hash (M6 Foundation)**: `a63329d`
+- **Release Tag**: `v0.6.0`
 - **Branch**: `main`
 - **Remote**: `https://github.com/hastimal/gemini-adk-study-coach-lab.git`
+
+---
+
+# M6 LEARNING EXPERIENCE ENHANCEMENT
+
+## Objective and Scope
+Transform the text-heavy Streamlit Workshop UI into an interactive, visual, evidence-linked learning experience aligned with the official Google Cloud Generative AI Leader exam guide, with verified free resources, architecture diagrams, runnable Python examples, practice materials, and LinkedIn sharing.
+
+## Files Created or Modified
+- **Created**:
+  - `src/study_coach/models/learning_resource.py`: Pydantic metadata schema for curated resources.
+  - `src/study_coach/data/learning_resources.yaml`: 9 verified external learning resources catalog.
+  - `src/study_coach/tools/resource_tools.py`: Deterministic query, matching, and filtering tools.
+  - `src/study_coach/services/lesson_visuals.py`: Declarative Mermaid architecture diagrams and text fallbacks.
+  - `src/study_coach/data/code_examples/tokenization_demo.py`: Word & subword tokenization demo.
+  - `src/study_coach/data/code_examples/attention_demo.py`: Vector dot-product attention calculation.
+  - `src/study_coach/data/code_examples/rag_simulation.py`: Lexical retrieval & grounded prompt assembly.
+  - `src/study_coach/data/code_examples_registry.py`: Registry for runnable Python examples.
+  - `tests/unit/test_learning_resources.py`: Tests for catalog schema and query tools.
+  - `tests/unit/test_lesson_visuals.py`: Tests for visual diagrams and text alternatives.
+  - `tests/unit/test_code_examples.py`: Tests for runnable Python code execution in isolated subprocesses.
+  - `tests/unit/test_streamlit_ui.py`: Automated UI testing using Streamlit's official `AppTest`.
+  - `docs/learning-experience.md`: Comprehensive documentation on resources, diagrams, code examples, and alignment.
+- **Modified**:
+  - `ui/app.py`: Streamlit application updated with ResourceCard component, 6 progressive disclosure sub-tabs, Mermaid diagram rendering, runnable Python examples, topic preselection link, and LinkedIn share generator.
+  - `src/study_coach/services/workshop_facade.py`: Added `get_topic_resources`, `get_day_resources`, `get_topic_diagram`, and `get_topic_code_examples`.
+  - `tests/unit/test_workshop_facade.py`: Added tests for facade enrichment methods.
+  - `README.md`, `docs/workshop.md`, `docs/architecture.md`: Updated architecture diagrams and runbooks.
+
+## Validation Results
+
+| Category | Command | Target / Scope | Result | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Learning Resources** | `uv run pytest tests/unit/test_learning_resources.py` | Resource catalog, Pydantic validation, filtering | 6 passed | PASS |
+| **Visual Diagrams** | `uv run pytest tests/unit/test_lesson_visuals.py` | Mermaid diagram syntax, components, text alternative | 3 passed | PASS |
+| **Python Code Examples** | `uv run pytest tests/unit/test_code_examples.py` | In-process execution & isolated subprocess execution | 5 passed | PASS |
+| **Streamlit AppTest** | `uv run pytest tests/unit/test_streamlit_ui.py` | UI tabs, Day 4 resources, diagrams, code blocks, weak topic remediation | 4 passed | PASS |
+| **Total Test Suite** | `uv run pytest -q` | Full regression suite (M1–M6 + enhancements) | 91 passed in 2.02s | PASS |
+| **Code Style** | `uv run ruff check .` | Linting & import sorting | All checks passed | PASS |
+| **Formatting** | `uv run ruff format --check .` | Style enforcement | 68 files already formatted | PASS |
+| **Type Safety** | `uv run mypy .` | Strict Python 3.12 typing | 0 issues in 53 source files | PASS |
+| **Docker Compose** | `docker compose up -d` | Container runtime & health check | Status: Up (healthy), HTTP 200 OK | PASS |
+
+## Known Limitations
+- The student workshop interface does not enforce multi-user authentication; sessions are keyed by `session_id` and isolated in memory.
+- In headless CI/sandbox environments without arm64 Playwright browser binary support, browser UI validation is performed via Streamlit's official `AppTest` framework.
+

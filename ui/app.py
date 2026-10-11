@@ -8,6 +8,7 @@ from typing import Any, Literal, cast
 import streamlit as st
 from dotenv import load_dotenv
 
+from study_coach.models.learning_resource import LearningResource
 from study_coach.models.quiz import QuizSubmission
 from study_coach.models.student import StudentProfile
 from study_coach.services.workshop_facade import WorkshopFacade
@@ -39,6 +40,38 @@ def run_async(coro: Any) -> Any:
     return loop.run_until_complete(coro)
 
 
+def render_resource_card(res: LearningResource) -> None:
+    """Render a clean, badge-enhanced card for a curated learning resource."""
+    with st.container(border=True):
+        col_main, col_badge = st.columns([4, 1])
+        with col_main:
+            official_badge = (
+                "⭐ **Official Google**" if res.is_official else "🌐 **Community**"
+            )
+            st.markdown(f"#### {res.title}")
+            st.caption(
+                f"{official_badge} | Provider: **{res.provider}** | Type: `{res.resource_type}`"
+            )
+            st.write(res.short_description)
+            if res.estimated_minutes:
+                st.caption(
+                    f"⏱️ Estimated Duration: ~{res.estimated_minutes} min | Level: {res.experience_level.capitalize()}"
+                )
+            st.link_button(
+                f"🔗 Open {res.resource_type.title()}",
+                str(res.url),
+                use_container_width=False,
+            )
+
+        with col_badge:
+            if res.requires_paid_access:
+                st.badge("Paid / Account", icon="💳")
+            elif res.requires_login:
+                st.badge("Free (Login)", icon="🔑")
+            else:
+                st.badge("100% Free Access", icon="🟢")
+
+
 # Initialize persistent Facade in Streamlit session state
 if "facade" not in st.session_state:
     st.session_state.facade = WorkshopFacade()
@@ -49,6 +82,9 @@ if "session_id" not in st.session_state:
 if "user_id" not in st.session_state:
     st.session_state.user_id = f"student_{uuid.uuid4().hex[:6]}"
 
+if "preselected_quiz_topic" not in st.session_state:
+    st.session_state.preselected_quiz_topic = None
+
 facade: WorkshopFacade = st.session_state.facade
 session_id: str = st.session_state.session_id
 user_id: str = st.session_state.user_id
@@ -56,8 +92,8 @@ user_id: str = st.session_state.user_id
 # Header
 st.title("🎓 Gemini + Google ADK Multi-Agent Study Coach")
 st.caption(
-    "Adaptive certification preparation powered by Gemini, Google Agent Development Kit (ADK), "
-    "and deterministic Python grading."
+    "Interactive, visual, evidence-linked certification preparation powered by Gemini, "
+    "Google Agent Development Kit (ADK), and deterministic Python grading."
 )
 
 # Sidebar: Student Configuration
@@ -108,6 +144,7 @@ with st.sidebar:
         st.session_state.active_quiz = None
         st.session_state.active_quiz_result = None
         st.session_state.explained_topic = None
+        st.session_state.preselected_quiz_topic = None
         st.success(f"Session started! (ID: {session_id})")
 
     st.divider()
@@ -181,16 +218,33 @@ with tab_plan:
         selected_day = plan.days[selected_day_idx]
         st.markdown(f"### Details for {day_options[selected_day_idx]}")
         st.write(
-            f"**Total Day Time:** {selected_day.total_minutes} / {plan.daily_study_minutes} minutes"
+            f"**Allocated Core Time:** {selected_day.total_minutes} / {plan.daily_study_minutes} minutes"
         )
 
+        st.markdown("#### 📌 Core Planned Activities")
+        day_topic_ids: list[str] = []
         for act in selected_day.activities:
+            if act.topic_id and act.topic_id not in day_topic_ids:
+                day_topic_ids.append(act.topic_id)
             with st.container(border=True):
                 st.markdown(
                     f"**Topic:** `{act.topic_id}` | **Type:** `{act.activity_type}`"
                 )
                 st.write(act.description)
-                st.caption(f"⏱️ Duration: {act.duration_minutes} minutes")
+                st.caption(f"⏱️ Allocated: {act.duration_minutes} minutes")
+
+        # Matched Learning Resources for Selected Day
+        day_resources = facade.get_day_resources(day_topic_ids)
+        if day_resources:
+            st.markdown(
+                f"#### 📚 Curated Learning Resources for Day {selected_day.day_number}"
+            )
+            st.info(
+                "💡 **Study Budget Notice:** External resources are optional enrichment with independent "
+                "time estimates and do **not** silently inflate your daily study budget."
+            )
+            for res in day_resources:
+                render_resource_card(res)
     else:
         st.info(
             "No active study plan found. Click 'Generate Initial Plan' above to start."
@@ -200,10 +254,10 @@ with tab_plan:
 # TAB 2: LEARN TOPIC
 # ==============================================================================
 with tab_learn:
-    st.header("📖 Topic Deep Dive")
+    st.header("📖 Interactive Topic Learning Experience")
     st.write(
-        "Ask the Topic Expert agent to teach a curriculum topic adapted to your level, "
-        "featuring analogies, architectural examples, and comprehension checks."
+        "Structured multi-modal lessons featuring curriculum objectives, visual diagrams, "
+        "step-by-step explanations, runnable Python demos, and verified external learning resources."
     )
 
     topics = facade.get_supported_curriculum_topics()
@@ -233,28 +287,136 @@ with tab_learn:
     if st.session_state.get("explained_topic"):
         exp = st.session_state.explained_topic
         st.markdown(f"## {exp.topic_title} (`{exp.topic_id}`)")
-        st.caption(f"Adapted Level: **{exp.experience_level.capitalize()}**")
+        st.caption(
+            f"Adapted Level: **{exp.experience_level.capitalize()}** | Official Exam Domain: Google Cloud Generative AI Leader"
+        )
 
-        st.markdown("### 🎯 Learning Objectives")
-        for obj in exp.learning_objectives:
-            st.markdown(f"- {obj}")
+        # Progressive Disclosure: Tabs for Structured Multi-Modal Learning
+        learn_subtabs = st.tabs(
+            [
+                "🎯 Summary & Objectives",
+                "📊 Architecture Diagram",
+                "📘 Step-by-Step Lesson",
+                "💻 Hands-On Python",
+                "🌐 Verified Resources",
+                "🚀 Practice & Share",
+            ]
+        )
 
-        st.markdown("### 💡 Key Concepts & Vocabulary")
-        st.write(", ".join(f"`{c}`" for c in exp.key_concepts))
+        with learn_subtabs[0]:
+            st.markdown("### 🎯 Learning Objectives")
+            for obj in exp.learning_objectives:
+                st.markdown(f"- {obj}")
 
-        st.markdown("### 📘 In-Depth Explanation")
-        st.write(exp.explanation)
+            st.markdown("### 💡 Key Concepts & Vocabulary")
+            st.write(", ".join(f"`{c}`" for c in exp.key_concepts))
 
-        st.markdown("### ☁️ Practical Google Cloud Architecture Example")
-        st.info(exp.practical_example)
+        with learn_subtabs[1]:
+            diagram = facade.get_topic_diagram(chosen_topic_id)
+            if diagram:
+                st.markdown(f"### 📊 {diagram.title}")
+                st.caption(diagram.description)
 
-        st.markdown("### ⚠️ Common Misconceptions & Pitfalls")
-        for m in exp.common_misconceptions:
-            st.warning(m)
+                # Render Streamlit-native Mermaid diagram
+                st.markdown(f"```mermaid\n{diagram.mermaid_code}\n```")
 
-        st.markdown("### ❓ Self-Assessment Comprehension Questions")
-        for q in exp.comprehension_questions:
-            st.markdown(f"- {q}")
+                with st.expander(
+                    "🔍 Architecture Breakdown & Component Roles", expanded=True
+                ):
+                    for comp, role in diagram.components.items():
+                        st.markdown(f"- **{comp}**: {role}")
+
+                with st.expander("📝 Accessible Text Alternative (Fallback)"):
+                    st.text(diagram.text_alternative)
+            else:
+                st.info(
+                    "Conceptual architecture diagram is in preparation for this topic."
+                )
+
+        with learn_subtabs[2]:
+            st.markdown("### 📘 In-Depth Technical Explanation")
+            st.write(exp.explanation)
+
+            st.markdown("### ☁️ Practical Google Cloud Architecture Example")
+            st.info(exp.practical_example)
+
+            st.markdown("### ⚠️ Common Misconceptions & Pitfalls")
+            for m in exp.common_misconceptions:
+                st.warning(m)
+
+        with learn_subtabs[3]:
+            code_examples = facade.get_topic_code_examples(chosen_topic_id)
+            if code_examples:
+                st.markdown("### 💻 Practical Python Examples")
+                st.caption(
+                    "Curated, self-contained, beginner-friendly runnable examples. Zero credentials or cloud charges required."
+                )
+                for c_ex in code_examples:
+                    with st.container(border=True):
+                        st.markdown(f"#### {c_ex.title}")
+                        st.caption(
+                            f"🏷️ Type: **{c_ex.example_type}** | Credentials Required: **{c_ex.requires_credentials}**"
+                        )
+                        st.write(c_ex.description)
+                        st.code(c_ex.code, language="python")
+                        st.markdown("**Expected Output:**")
+                        st.code(c_ex.expected_output)
+            else:
+                st.info(
+                    "Interactive Python example is available in the Hands-on lab library."
+                )
+
+        with learn_subtabs[4]:
+            st.markdown("### 🌐 Curated Free Learning Resources")
+            st.caption(
+                "Strictly verified free documentation, video explanations, and interactive guides."
+            )
+            topic_res = facade.get_topic_resources(chosen_topic_id)
+            if topic_res:
+                for res in topic_res:
+                    render_resource_card(res)
+            else:
+                st.info("Resources catalog currently being populated for this topic.")
+
+        with learn_subtabs[5]:
+            st.markdown("### 🚀 Practice This Topic")
+            st.write(
+                "Reinforce your understanding using comprehension checks or launch a full "
+                "5-question practice quiz evaluated deterministically by the Quiz Generator."
+            )
+
+            st.markdown("#### ❓ Self-Assessment Questions")
+            for q in exp.comprehension_questions:
+                st.markdown(f"- {q}")
+
+            st.divider()
+            col_p1, col_p2 = st.columns(2)
+            with col_p1:
+                if st.button("📝 Open Practice Quiz for This Topic", type="primary"):
+                    st.session_state.preselected_quiz_topic = chosen_topic_id
+                    st.success(
+                        f"Topic `{chosen_topic_id}` preselected! Switch to the 'Practice Quiz' tab above."
+                    )
+
+            with col_p2:
+                st.markdown("#### 📢 Share My Learning")
+                share_text = (
+                    f"🎓 Just completed my deep dive into '{exp.topic_title}' for the "
+                    "Google Cloud Generative AI Leader certification with Gemini & ADK Study Coach! "
+                    "#GoogleCloud #GenerativeAI #StudyCoach #GeminiADK"
+                )
+                st.text_area(
+                    "LinkedIn Post Preview (Ready to copy):",
+                    value=share_text,
+                    height=100,
+                )
+                st.link_button(
+                    "🌐 Open LinkedIn Post Editor",
+                    "https://www.linkedin.com/sharing/share-offsite/?url=https://cloud.google.com/learn/certification/generative-ai-leader",
+                )
+                st.caption(
+                    "🔒 Privacy notice: Does not automatically publish; zero student test scores or answer keys are shared."
+                )
 
 # ==============================================================================
 # TAB 3: PRACTICE QUIZ
@@ -266,11 +428,21 @@ with tab_quiz:
         "Answer keys are strictly protected on the backend until you submit."
     )
 
+    # Check for preselected topic from Learn tab
+    default_topic_idx = 0
+    if st.session_state.get("preselected_quiz_topic"):
+        target_id = st.session_state.preselected_quiz_topic
+        for idx, (label, tid) in enumerate(topic_map.items()):
+            if tid == target_id:
+                default_topic_idx = idx
+                break
+
     q_col1, q_col2 = st.columns([1, 1])
     with q_col1:
         quiz_topic_label = st.selectbox(
             "Select Quiz Topic",
             list(topic_map.keys()),
+            index=default_topic_idx,
             key="quiz_topic_select",
         )
         quiz_topic_id = topic_map[quiz_topic_label]
@@ -403,6 +575,24 @@ with tab_adaptive:
             st.warning(
                 f"Identified Weak Topics: {', '.join(current_session.weak_topics)}"
             )
+
+            # Targeted Resource & Visual Recommendations for Weak Topics
+            st.markdown("### 🎯 Recommended Remediation Pathways")
+            for wt in current_session.weak_topics:
+                with st.expander(f"Remediation Plan for `{wt}`", expanded=True):
+                    st.markdown(f"**Action Steps for `{wt}`:**")
+                    st.markdown(
+                        "1. 📊 Review the visual architecture diagram in Learn Topic."
+                    )
+                    st.markdown(
+                        "2. 💻 Step through the offline runnable Python code demo."
+                    )
+                    st.markdown(
+                        "3. 📖 Review the official documentation and video resources below:"
+                    )
+                    wt_res = facade.get_topic_resources(wt)
+                    for r in wt_res:
+                        render_resource_card(r)
         else:
             st.info(
                 "No weak topics identified yet. Complete a practice quiz to generate performance evidence."

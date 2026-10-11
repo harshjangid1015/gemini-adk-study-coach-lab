@@ -174,3 +174,24 @@ async def test_facade_adaptive_plan_rejection_without_quiz() -> None:
         match="Cannot claim adaptive replanning occurred without quiz evidence",
     ):
         await facade.adapt_study_plan("no_quiz_sess", "u1", completed_days=0)
+
+
+def test_facade_enrichment_helpers() -> None:
+    facade = WorkshopFacade()
+
+    # Topic resources
+    resources = facade.get_topic_resources("llm_architecture")
+    assert len(resources) >= 2
+
+    # Day resources
+    day_res = facade.get_day_resources(["llm_architecture", "vertex_ai_studio"])
+    assert len(day_res) >= 3
+
+    # Topic diagrams
+    diagram = facade.get_topic_diagram("llm_architecture")
+    assert diagram is not None
+    assert "Transformer" in diagram.title
+
+    # Topic code examples
+    code_ex = facade.get_topic_code_examples("llm_architecture")
+    assert len(code_ex) >= 2
