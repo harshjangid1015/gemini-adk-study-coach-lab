@@ -48,7 +48,7 @@ To run all tests and quality checks, use:
 - Milestone 3: Topic Expert Agent (Done)
 - Milestone 4: Quiz Generator Agent (Done)
 - Milestone 5: Multi-Agent Orchestration (Done)
-- Milestone 6: Workshop UI & Docker (Planned)
+- Milestone 6: Workshop UI & Docker (Done)
 - Milestone 7: Observability and Evaluation (Planned)
 - Milestone 8: Workshop-Ready Release (Planned)
 
@@ -60,7 +60,9 @@ To run all tests and quality checks, use:
   - **Quiz Generator Agent (`quiz_generator`)**: Generates practice multiple-choice questions anchored in the curriculum, protects answer keys before submission, and grades student answers deterministically using Python.
   - **Adaptive Learning Orchestration Workflow (`AdaptiveStudyWorkflow`)**: Coordinates plan creation, topic learning, practice quiz generation, sanitized question presentation, deterministic scoring, and weak-topic prioritized replanning.
   - **Student Session State (`LearningSessionService`)**: In-memory session tracking powered by Google ADK `InMemorySessionService`.
+  - **Student Workshop UI (`ui/app.py`)**: Multi-tab Streamlit web application providing study planning, topic learning, sanitized quizzing, grading, and adaptive replanning.
+  - **Docker & Docker Compose Runtime**: Hardened, reproducible containerization using pinned Python 3.12 slim, locked dependencies via `uv.lock`, healthchecks, and non-root execution.
   - Pydantic models for student profiles, study requests, study plans, topic explanations, quizzes/evaluations, and learning sessions.
   - Deterministic curriculum, planning, and grading tools reading `google_cloud_genai_leader.yaml`.
-- **Planned**: Workshop web UI, Docker containerization, and evaluation telemetry.
+- **Planned**: Observability, Prometheus metrics, OpenTelemetry, and workshop-ready release package.
 

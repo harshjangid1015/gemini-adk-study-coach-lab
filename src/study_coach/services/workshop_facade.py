@@ -1,0 +1,178 @@
+"""Workshop facade service providing clean UI-friendly methods over multi-agent workflows."""
+
+from typing import Any
+
+from google.adk.runners import InMemoryRunner
+from google.genai import types
+
+from study_coach.agents.topic_expert import topic_expert
+from study_coach.models.learning_session import LearningProgress, LearningSession
+from study_coach.models.quiz import QuizResult, QuizSubmission, StudentQuizQuestion
+from study_coach.models.student import StudentProfile
+from study_coach.models.study_plan import StudyPlan
+from study_coach.models.topic_explanation import TopicExplanation
+from study_coach.services.learning_session import LearningSessionService
+from study_coach.tools.curriculum_tools import load_curriculum
+from study_coach.workflows.adaptive_study import AdaptiveStudyWorkflow
+
+
+class WorkshopFacade:
+    """Thin application facade connecting Streamlit UI to real ADK workflows and agents.
+
+    Ensures session continuity, private answer key protection, and deterministic grading.
+    """
+
+    def __init__(
+        self,
+        session_service: LearningSessionService | None = None,
+        workflow: AdaptiveStudyWorkflow | None = None,
+    ) -> None:
+        self.session_service = session_service or LearningSessionService()
+        self.workflow = workflow or AdaptiveStudyWorkflow(
+            session_service=self.session_service
+        )
+
+    def get_supported_curriculum_topics(self) -> list[dict[str, Any]]:
+        """Returns the list of supported curriculum topics with metadata."""
+        curriculum = load_curriculum()
+        topics: list[dict[str, Any]] = curriculum.get("topics", [])
+        return topics
+
+    async def get_or_create_session(
+        self,
+        session_id: str,
+        user_id: str,
+        student_profile: StudentProfile | None = None,
+        certification_name: str = "Google Cloud Generative AI Leader",
+        days_remaining: int = 14,
+    ) -> LearningSession:
+        """Retrieves an existing learning session or initializes a new validated one."""
+        return await self.session_service.get_or_create_session(
+            session_id=session_id,
+            user_id=user_id,
+            student_profile=student_profile,
+            certification_name=certification_name,
+            days_remaining=days_remaining,
+        )
+
+    async def get_session(
+        self, session_id: str, user_id: str
+    ) -> LearningSession | None:
+        """Retrieves a session if it exists."""
+        return await self.session_service.get_session(
+            session_id=session_id, user_id=user_id
+        )
+
+    async def create_study_plan(
+        self,
+        session_id: str,
+        user_id: str,
+        student_profile: StudentProfile,
+        certification_name: str = "Google Cloud Generative AI Leader",
+        days_until_exam: int = 14,
+    ) -> StudyPlan:
+        """Invokes Study Planner agent through workflow to generate and save plan."""
+        return await self.workflow.create_initial_plan(
+            session_id=session_id,
+            user_id=user_id,
+            student_profile=student_profile,
+            certification_name=certification_name,
+            days_until_exam=days_until_exam,
+        )
+
+    async def explain_topic(
+        self,
+        topic_id: str,
+        experience_level: str = "beginner",
+    ) -> TopicExplanation:
+        """Invokes Topic Expert agent using Google ADK to teach a curriculum topic."""
+        runner = InMemoryRunner(agent=topic_expert)
+        prompt = (
+            f"Explain the curriculum topic '{topic_id}' thoroughly for a "
+            f"{experience_level} student preparing for Google Cloud certification. "
+            "Include key concepts, clear explanations, Google Cloud practical examples, "
+            "common misconceptions, and comprehension check questions."
+        )
+
+        session_id = f"explain_{topic_id}_{experience_level}"
+        await runner.session_service.create_session(
+            app_name=runner.app_name,
+            user_id="workshop_learner",
+            session_id=session_id,
+        )
+
+        explanation_dict: dict[str, Any] | None = None
+        async for event in runner.run_async(
+            user_id="workshop_learner",
+            session_id=session_id,
+            new_message=types.Content(
+                role="user",
+                parts=[types.Part.from_text(text=prompt)],
+            ),
+        ):
+            if event.content and event.content.parts:
+                for part in event.content.parts:
+                    fc = getattr(part, "function_call", None)
+                    if fc and fc.name == "set_model_response" and fc.args:
+                        explanation_dict = fc.args.get("response") or fc.args
+
+        if not explanation_dict:
+            raise RuntimeError(
+                f"Topic Expert failed to return structured explanation for '{topic_id}'"
+            )
+
+        return TopicExplanation.model_validate(explanation_dict)
+
+    async def generate_quiz(
+        self,
+        session_id: str,
+        user_id: str,
+        topic_ids: list[str] | None = None,
+        question_count: int = 5,
+        experience_level: str | None = None,
+    ) -> list[StudentQuizQuestion]:
+        """Generates a practice quiz and returns sanitized questions with answers hidden."""
+        return await self.workflow.generate_practice_quiz(
+            session_id=session_id,
+            user_id=user_id,
+            topic_ids=topic_ids,
+            question_count=question_count,
+            experience_level=experience_level,
+        )
+
+    async def submit_quiz(
+        self,
+        session_id: str,
+        user_id: str,
+        submission: QuizSubmission,
+    ) -> QuizResult:
+        """Deterministically evaluates answers against private server-side quiz."""
+        return await self.workflow.submit_quiz_answers(
+            session_id=session_id,
+            user_id=user_id,
+            submission=submission,
+        )
+
+    async def get_learning_progress(
+        self,
+        session_id: str,
+        user_id: str,
+    ) -> LearningProgress:
+        """Retrieves accumulated progress metrics."""
+        return await self.workflow.retrieve_learning_progress(
+            session_id=session_id,
+            user_id=user_id,
+        )
+
+    async def adapt_study_plan(
+        self,
+        session_id: str,
+        user_id: str,
+        completed_days: int = 0,
+    ) -> StudyPlan:
+        """Generates adapted study plan prioritizing weak topics identified in quiz results."""
+        return await self.workflow.generate_adapted_plan(
+            session_id=session_id,
+            user_id=user_id,
+            completed_days=completed_days,
+        )
