@@ -42,6 +42,30 @@ To run all tests and quality checks, use:
 ./scripts/run_tests.sh
 ```
 
+To run the live Google ADK model evaluation suite:
+```bash
+uv run python tests/eval/run_live_evaluation.py
+```
+
+## Observability & Docker Deployment
+The full observability stack (OpenTelemetry Collector, Grafana Tempo, Prometheus, and Grafana) is available under the Docker Compose `observability` profile:
+
+```bash
+# Build and launch all five services
+docker compose --profile observability up -d --build
+
+# Verify container statuses
+docker compose --profile observability ps
+```
+
+- **Streamlit Web UI**: [http://localhost:8501](http://localhost:8501)
+- **Prometheus Metrics**: [http://localhost:8000/metrics](http://localhost:8000/metrics)
+- **Prometheus Dashboard**: [http://localhost:9090](http://localhost:9090)
+- **Grafana Tempo (Traces)**: [http://localhost:3200](http://localhost:3200)
+- **Grafana Dashboards**: [http://localhost:3000](http://localhost:3000) (pre-provisioned Study Coach dashboard)
+
+For architecture diagrams, configuration details, and privacy redaction rules, see [Observability Guide](docs/observability.md) and [Evaluation Guide](docs/evaluation.md).
+
 ## Roadmap
 - Milestone 1: Project Foundation (Done)
 - Milestone 2: Study Planner Agent (Done)
@@ -49,7 +73,7 @@ To run all tests and quality checks, use:
 - Milestone 4: Quiz Generator Agent (Done)
 - Milestone 5: Multi-Agent Orchestration (Done)
 - Milestone 6: Workshop UI & Docker (Done)
-- Milestone 7: Observability and Evaluation (Planned)
+- Milestone 7: Observability and Evaluation (Done)
 - Milestone 8: Workshop-Ready Release (Planned)
 
 ## Current Functionality vs Planned Features
@@ -63,9 +87,11 @@ To run all tests and quality checks, use:
   - **Student Workshop UI (`ui/app.py`)**: Multi-tab Streamlit web application providing study planning, topic learning, sanitized quizzing, grading, and adaptive replanning.
   - **Interactive Learning Experience & Practice**: Interactive 3-question formative Quick Knowledge Checks with `st.radio`, backend answer-key protection, pure Python deterministic scoring (100%, 66.7%, 33.3%, 0%), instant practice quiz navigation with topic preselection, enhanced LinkedIn post sharing draft with modern copy workflow, compact resource cards with authentic 28px vector provider brand logos across 19 technical platforms, privacy-safe sharing controls ([Open ↗], [Copy Link], and [Share ▾] popovers), responsive two-column grid, Mermaid architecture diagrams, and runnable Python examples.
   - **Docker & Docker Compose Runtime**: Hardened, reproducible containerization using pinned Python 3.12 slim, locked dependencies via `uv.lock`, healthchecks, and non-root execution.
-  - Pydantic models for student profiles, study requests, study plans, topic explanations, quizzes/evaluations, learning resources (with thumbnails), and learning sessions.
-  - Deterministic curriculum, planning, resource matching, and grading tools reading `google_cloud_genai_leader.yaml` and `learning_resources.yaml`.
-- **Planned**: Observability, Prometheus metrics, OpenTelemetry, and workshop-ready release package.
+  - **OpenTelemetry & Distributed Tracing**: Google ADK `ADKObservabilityPlugin` bridging agent and tool lifecycles to OpenTelemetry spans; high-level `@trace_workflow_step` timing decorators; Tempo distributed trace storage; API key sanitization (`[REDACTED_API_KEY]`) and answer-key masking.
+  - **Prometheus Metrics & Grafana Dashboard**: Application Prometheus metrics endpoint on port 8000 with pre-initialized metric series; Grafana pre-provisioned datasource configuration; 11-panel Grafana dashboard (`study-coach-main`).
+  - **Deterministic & Live Agent Evaluation**: 19 deterministic contract tests in `tests/eval/` and a live Google ADK model evaluation runner in `tests/eval/run_live_evaluation.py` evaluating topic explanation, quiz generation, study planning, and coordinator routing.
+- **Planned**: Workshop-ready release package, distribution artifacts, and final verification.
+
 
 
 

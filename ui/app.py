@@ -20,11 +20,16 @@ from dotenv import load_dotenv
 
 from study_coach.models.quiz import QuizResult, QuizSubmission
 from study_coach.models.student import StudentProfile
+from study_coach.observability import setup_tracing, start_metrics_server
 from study_coach.services.workshop_facade import WorkshopFacade
 from ui.components.resource_cards import render_resource_grid
 
 # Load environment configuration
 load_dotenv()
+
+# Initialize optional observability gracefully
+setup_tracing()
+start_metrics_server()
 
 st.set_page_config(
     page_title="Gemini ADK Study Coach Lab",

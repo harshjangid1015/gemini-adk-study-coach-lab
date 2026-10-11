@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "scenarios": [
+    {
+      "id": "scenario_1",
+      "description": "14 days, beginner, 90 minutes daily plan request",
+      "target_agent": "study_planner",
+      "request": "I am preparing for the Google Cloud Generative AI Leader certification in 14 days. I am a beginner and can study 90 minutes daily. Create my study plan.",
+      "expected": {
+        "days_until_exam": 14,
+        "daily_minutes": 90,
+        "experience_level": "beginner"
+      }
+    },
+    {
+      "id": "scenario_2",
+      "description": "7 days, intermediate, 45 minutes daily plan request",
+      "target_agent": "study_planner",
+      "request": "I have 7 days left to study for the Google Cloud Generative AI Leader exam. I am an intermediate student and have 45 minutes daily. Help me plan.",
+      "expected": {
+        "days_until_exam": 7,
+        "daily_minutes": 45,
+        "experience_level": "intermediate"
+      }
+    },
+    {
+      "id": "scenario_3",
+      "description": "Explain grounding and RAG for a beginner",
+      "target_agent": "topic_expert",
+      "request": "Explain grounding and RAG for a beginner preparing for the Google Cloud exam.",
+      "expected": {
+        "topic_id": "grounding_rag",
+        "experience_level": "beginner"
+      }
+    },
+    {
+      "id": "scenario_4",
+      "description": "Explain Transformer attention at an intermediate level",
+      "target_agent": "topic_expert",
+      "request": "Explain Transformer attention architecture and multi-head attention for an intermediate learner.",
+      "expected": {
+        "topic_id": "transformer_architecture",
+        "experience_level": "intermediate"
+      }
+    },
+    {
+      "id": "scenario_5",
+      "description": "Generate three formative MCQs",
+      "target_agent": "quiz_generator",
+      "request": "Generate a 3-question formative practice quiz on llm_foundations for a beginner.",
+      "expected": {
+        "question_count": 3,
+        "topic_id": "llm_foundations",
+        "formative": true
+      }
+    },
+    {
+      "id": "scenario_6",
+      "description": "Generate five formal practice questions",
+      "target_agent": "quiz_generator",
+      "request": "Generate a 5-question practice quiz on grounding_rag and vertex_ai for intermediate student.",
+      "expected": {
+        "question_count": 5,
+        "formative": false
+      }
+    },
+    {
+      "id": "scenario_7",
+      "description": "Submit three correct and two incorrect answers in a five-question quiz",
+      "target_agent": "workflow_grading",
+      "expected": {
+        "total_questions": 5,
+        "correct_answers": 3,
+        "score_percentage": 60.0
+      }
+    },
+    {
+      "id": "scenario_8",
+      "description": "Replan remaining study days using weak topics",
+      "target_agent": "study_planner",
+      "request": "Replan remaining 4 days prioritizing weak topic 'grounding_rag'.",
+      "expected": {
+        "remaining_days": 4,
+        "prioritized_weak_topic": "grounding_rag"
+      }
+    },
+    {
+      "id": "scenario_9",
+      "description": "Handle unknown topic",
+      "target_agent": "topic_expert",
+      "request": "Explain quantum_computing_cryptography for Google Cloud Generative AI Leader.",
+      "expected": {
+        "error_expected": true
+      }
+    },
+    {
+      "id": "scenario_10",
+      "description": "Handle invalid daily study minutes",
+      "target_agent": "study_planner",
+      "request": "I can study 0 minutes daily. Create my plan.",
+      "expected": {
+        "error_expected": true
+      }
+    }
+  ]
+}

@@ -11,6 +11,10 @@ from study_coach.models.quiz import QuizResult, QuizSubmission, StudentQuizQuest
 from study_coach.models.student import StudentProfile
 from study_coach.models.study_plan import StudyPlan
 from study_coach.models.topic_explanation import TopicExplanation
+from study_coach.observability import (
+    ADKObservabilityPlugin,
+    trace_workflow_step,
+)
 from study_coach.services.learning_session import LearningSessionService
 from study_coach.tools.curriculum_tools import load_curriculum
 from study_coach.workflows.adaptive_study import AdaptiveStudyWorkflow
@@ -26,10 +30,13 @@ class WorkshopFacade:
         self,
         session_service: LearningSessionService | None = None,
         workflow: AdaptiveStudyWorkflow | None = None,
+        observability_plugin: ADKObservabilityPlugin | None = None,
     ) -> None:
         self.session_service = session_service or LearningSessionService()
+        self.observability_plugin = observability_plugin or ADKObservabilityPlugin()
         self.workflow = workflow or AdaptiveStudyWorkflow(
-            session_service=self.session_service
+            session_service=self.session_service,
+            observability_plugin=self.observability_plugin,
         )
 
     def get_supported_curriculum_topics(self) -> list[dict[str, Any]]:
@@ -80,13 +87,16 @@ class WorkshopFacade:
             days_until_exam=days_until_exam,
         )
 
+    @trace_workflow_step(
+        "explain_topic", workflow="topic_explanation", agent="topic_expert"
+    )
     async def explain_topic(
         self,
         topic_id: str,
         experience_level: str = "beginner",
     ) -> TopicExplanation:
         """Invokes Topic Expert agent using Google ADK to teach a curriculum topic."""
-        runner = InMemoryRunner(agent=topic_expert)
+        runner = InMemoryRunner(agent=topic_expert, plugins=[self.observability_plugin])
         prompt = (
             f"Explain the curriculum topic '{topic_id}' thoroughly for a "
             f"{experience_level} student preparing for Google Cloud certification. "

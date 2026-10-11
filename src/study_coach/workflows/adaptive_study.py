@@ -16,6 +16,12 @@ from study_coach.models.quiz import (
 )
 from study_coach.models.student import StudentProfile
 from study_coach.models.study_plan import StudyPlan
+from study_coach.observability import (
+    QUIZ_SUBMISSIONS_TOTAL,
+    REPLANNING_TOTAL,
+    ADKObservabilityPlugin,
+    trace_workflow_step,
+)
 from study_coach.services.learning_session import LearningSessionService
 from study_coach.tools.planning_tools import validate_study_plan
 from study_coach.tools.quiz_tools import grade_quiz
@@ -27,9 +33,14 @@ class AdaptiveStudyWorkflow:
     def __init__(
         self,
         session_service: LearningSessionService | None = None,
+        observability_plugin: ADKObservabilityPlugin | None = None,
     ) -> None:
         self.session_service = session_service or LearningSessionService()
+        self.observability_plugin = observability_plugin or ADKObservabilityPlugin()
 
+    @trace_workflow_step(
+        "create_initial_plan", workflow="study_plan_generation", agent="study_planner"
+    )
     async def create_initial_plan(
         self,
         session_id: str,
@@ -47,7 +58,9 @@ class AdaptiveStudyWorkflow:
             days_remaining=days_until_exam,
         )
 
-        runner = InMemoryRunner(agent=study_planner)
+        runner = InMemoryRunner(
+            agent=study_planner, plugins=[self.observability_plugin]
+        )
         prompt = (
             f"I am preparing for the {certification_name} certification in {days_until_exam} days. "
             f"I am a {student_profile.experience_level} and can study {student_profile.daily_study_minutes} minutes daily. "
@@ -102,6 +115,9 @@ class AdaptiveStudyWorkflow:
             return None
         return session.current_study_plan
 
+    @trace_workflow_step(
+        "generate_practice_quiz", workflow="quiz_generation", agent="quiz_generator"
+    )
     async def generate_practice_quiz(
         self,
         session_id: str,
@@ -128,7 +144,9 @@ class AdaptiveStudyWorkflow:
             f"for {session.certification_name} suitable for a {level} learner."
         )
 
-        runner = InMemoryRunner(agent=quiz_generator)
+        runner = InMemoryRunner(
+            agent=quiz_generator, plugins=[self.observability_plugin]
+        )
         await runner.session_service.create_session(
             app_name=runner.app_name,
             user_id=user_id,
@@ -164,6 +182,11 @@ class AdaptiveStudyWorkflow:
         # Return strictly sanitized student-facing questions
         return validated_quiz.to_student_view()
 
+    @trace_workflow_step(
+        "generate_quick_check",
+        workflow="quick_check_generation",
+        agent="quiz_generator",
+    )
     async def generate_quick_check(
         self,
         session_id: str,
@@ -192,7 +215,9 @@ class AdaptiveStudyWorkflow:
         )
 
         qc_id = f"quick_check_{topic_id}_{len(session.stored_quizzes) + 1}"
-        runner = InMemoryRunner(agent=quiz_generator)
+        runner = InMemoryRunner(
+            agent=quiz_generator, plugins=[self.observability_plugin]
+        )
         await runner.session_service.create_session(
             app_name=runner.app_name,
             user_id=user_id,
@@ -232,6 +257,7 @@ class AdaptiveStudyWorkflow:
 
         return qc_id, validated_quiz.to_student_view()
 
+    @trace_workflow_step("evaluate_quick_check", workflow="quick_check_grading")
     async def evaluate_quick_check(
         self,
         session_id: str,
@@ -260,8 +286,10 @@ class AdaptiveStudyWorkflow:
 
         # Deterministic Python grading (zero LLM / zero network)
         result = grade_quiz(full_quiz, submission)
+        QUIZ_SUBMISSIONS_TOTAL.labels(quiz_type="quick_check").inc()
         return result
 
+    @trace_workflow_step("submit_quiz_answers", workflow="quiz_grading")
     async def submit_quiz_answers(
         self,
         session_id: str,
@@ -294,6 +322,7 @@ class AdaptiveStudyWorkflow:
 
         # Deterministic Python grading (zero LLM / zero network)
         result = grade_quiz(full_quiz, submission)
+        QUIZ_SUBMISSIONS_TOTAL.labels(quiz_type="practice_quiz").inc()
 
         # Update session state
         session.quiz_results.append(result)
@@ -342,6 +371,9 @@ class AdaptiveStudyWorkflow:
             raise ValueError(f"Session '{session_id}' not found.")
         return session.learning_progress
 
+    @trace_workflow_step(
+        "generate_adapted_plan", workflow="adaptive_replanning", agent="study_planner"
+    )
     async def generate_adapted_plan(
         self,
         session_id: str,
@@ -397,7 +429,9 @@ class AdaptiveStudyWorkflow:
             f"5. Explicitly state in planning_notes why the schedule was adapted and how weak topics are addressed."
         )
 
-        runner = InMemoryRunner(agent=study_planner)
+        runner = InMemoryRunner(
+            agent=study_planner, plugins=[self.observability_plugin]
+        )
         await runner.session_service.create_session(
             app_name=runner.app_name,
             user_id=user_id,
@@ -438,4 +472,5 @@ class AdaptiveStudyWorkflow:
         session.plan_revision += 1
         await self.session_service.save_session(session)
 
+        REPLANNING_TOTAL.inc()
         return validated_adapted_plan

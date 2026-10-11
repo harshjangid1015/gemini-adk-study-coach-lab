@@ -6,6 +6,11 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "google-adk>=0.1.0",
+    "opentelemetry-api>=1.24.0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.24.0",
+    "opentelemetry-exporter-otlp-proto-http>=1.24.0",
+    "opentelemetry-sdk>=1.24.0",
+    "prometheus-client>=0.20.0",
     "pydantic>=2.0.0",
     "pyyaml>=6.0",
     "streamlit>=1.65.0",
@@ -32,6 +37,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "types-protobuf>=5.0.0",
     "types-pyyaml>=6.0.12.20260906",
 ]
 [tool.pytest.ini_options]
