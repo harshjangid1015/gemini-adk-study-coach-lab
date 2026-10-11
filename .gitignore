@@ -2,6 +2,9 @@
 __pycache__/
 *.py[codz]
 *$py.class
+.DS_Store
+.adk/
+**/.adk/
 
 # C extensions
 *.so

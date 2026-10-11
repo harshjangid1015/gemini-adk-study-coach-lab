@@ -3,7 +3,7 @@ from google.adk import Agent
 from study_coach.agents.study_planner import study_planner
 from study_coach.config import GEMINI_MODEL
 
-study_coach = Agent(
+root_agent = Agent(
     name="study_coach",
     model=GEMINI_MODEL,
     instruction=(
@@ -17,3 +17,5 @@ study_coach = Agent(
     ),
     sub_agents=[study_planner],
 )
+
+study_coach = root_agent

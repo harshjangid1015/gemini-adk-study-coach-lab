@@ -463,7 +463,53 @@ All checks passed!
 - Currently, generating large 14-day study plans purely via `output_schema` might test the limits of the context window or token limits on some basic Gemini models.
 
 ## Git Commit and Tag
-Will be created as `feat(m2): implement Gemini ADK Study Planner Agent` and `v0.2.0`.
+- Commit: `fb4c5b7`
+- Tag: `v0.2.0`
 
 ## Push Status
-Pending execution.
+Completed.
+
+## Post-Release Verification (v0.2.0)
+
+### 1. Compatibility Findings
+- **Google ADK (2.11.0) & Gemini Tool Calling with Structured Output (`output_schema=StudyPlan`)**:
+  - In a live ADK execution, pairing `tools=[load_curriculum, calculate_available_minutes]` and `output_schema=StudyPlan` is fully compatible and handled natively by ADK.
+  - ADK exposes the Pydantic schema as a synthetic function tool (`set_model_response`).
+  - During live execution, the agent first executes its operational tools (`load_curriculum`, `calculate_available_minutes`), receives tool responses in the session context, and subsequently invokes `set_model_response` with the completed JSON payload adhering to `StudyPlan`.
+- **Model Availability**:
+  - `gemini-2.5-flash` returned a 404 client error (`models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash...`).
+  - Updated default model in `config.py` and local `.env` to `gemini-3.8-flash`, which resolved the issue and produced valid responses.
+- **Agent Discovery in ADK CLI**:
+  - Google ADK CLI loader expects `root_agent` to be exported by `<agent_folder>.agent`.
+  - Exposed `root_agent = Agent(...)` in `src/study_coach/agent.py` while keeping `study_coach = root_agent` as an alias for backwards compatibility.
+
+### 2. Live Agent Execution & Trace Analysis
+- **User Prompt Tested**:
+  > *"I'm preparing for the Google Cloud Generative AI Leader certification in 14 days. I'm a beginner and can study 90 minutes daily. Create my study plan."*
+- **Trace Inspection**:
+  1. `Event 0 (author: study_coach)`: Coordinator calls `transfer_to_agent(agent_name='study_planner')`.
+  2. `Event 1 (author: study_coach)`: Successful transfer response.
+  3. `Event 2 (author: study_planner)`: Planner calls `load_curriculum()` and `calculate_available_minutes(days=14, daily_minutes=90)`.
+  4. `Event 3 (author: study_planner)`: Returns curriculum dictionary and total available minutes (`1260`).
+  5. `Event 4 (author: study_planner)`: Planner calls `set_model_response(...)` with full 14-day study schedule.
+  6. `Event 5 (author: study_planner)`: Response from `set_model_response`.
+  7. `Event 6 (author: study_planner)`: Final JSON text response returned to the user.
+- **Verification of Generated Plan**:
+  - **Exact Days**: Exactly 14 days (`day_number` 1 through 14).
+  - **Daily Minute Cap**: Each day totals exactly 90 minutes; none exceed 90 minutes.
+  - **Total Planned Minutes**: 1,260 minutes matching `14 * 90`.
+  - **Topic Conformance**: Every activity strictly references valid topic IDs (`genai_concepts`, `llm_architecture`, `vertex_ai_studio`, `responsible_ai`) from the curriculum.
+  - **Deterministic Python Validation**: `validate_study_plan()` passed with zero validation errors.
+
+### 3. Local Web UI Verification
+- Executed `scripts/run_local.sh` (`uv run adk web`).
+- Verified server starts cleanly on `http://127.0.0.1:8000`.
+
+### 4. Offline Test Results vs Live Results
+- **Offline Quality Suite**:
+  - `pytest`: 16 passed in 0.59s.
+  - `ruff check`: All checks passed.
+  - `ruff format`: Formatted and compliant.
+  - `mypy`: Success (no issues found in 15 source files).
+- **Live Gemini Verification**:
+  - Successfully executed via live ADK Runner and validated end-to-end against live Gemini APIs.
